@@ -1,10 +1,10 @@
-<template>
-    
+<template>    
     <div class="login-view">        
         <Login /> 
     </div>
 </template>
 <script>
+
 import Login from '../components/LoginComponent .vue';
 
 export default {
@@ -12,9 +12,9 @@ export default {
     components: {
      Login,
     },
-
 };
 </script>
+
 <style scoped>
 .login-view{
     display: flex;
