@@ -50,9 +50,17 @@ export default{
                 this.isFormValid=true;
 
             }
-        }
+        },
+        createUser() {
+            if (this.isFormValid) {
+                localStorage.setItem('userId', this.username);
+                this.$router.push({ name: 'home' });
+            } else {
+                this.usernameError = 'Por favor, completa todos los campos correctamente';
+            }
+        },        
             
-    }
+    },
 }
 </script>
 
