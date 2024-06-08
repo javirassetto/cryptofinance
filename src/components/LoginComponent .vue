@@ -1,7 +1,7 @@
 <template>
     <div class="login">
-        <h2>Registration</h2>
-        <form action="" @submit.prevent="createUser">
+        <h2>Registracion</h2>
+        <form @submit.prevent= "createUser">
             <div>
                 <label for="username">Nombre Usuario:</label>
                 <input
@@ -26,12 +26,12 @@
 </template>
 <script>
 export default{
-    name:'LoginComponent',
+    name:"LoginComponent",
     data(){
         return{
-            username:'',
-            password:'',
-            usernameError:'',
+            username:"",
+            password:"",
+            usernameError:"",
             isFormValid: false,
         };
 
@@ -47,18 +47,10 @@ export default{
                 this.isFormValid=false;
             }
             else{
-                this.usernameError='';
+                this.usernameError="";
                 this.isFormValid=true;
             }
-        },
-        createUser() {
-            if (this.isFormValid) {
-                localStorage.setItem('userId', this.username);
-                this.$router.push({ name: 'home' });
-            } else {
-                this.usernameError = 'Por favor, completa todos los campos correctamente';
-            }
-        },             
+        },           
     },
 }
 </script>
