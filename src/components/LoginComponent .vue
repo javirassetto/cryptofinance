@@ -26,6 +26,7 @@
 </template>
 <script>
 export default{
+    name:'LoginComponent',
     data(){
         return{
             username:'',
@@ -48,7 +49,6 @@ export default{
             else{
                 this.usernameError='';
                 this.isFormValid=true;
-
             }
         },
         createUser() {
@@ -58,8 +58,7 @@ export default{
             } else {
                 this.usernameError = 'Por favor, completa todos los campos correctamente';
             }
-        },        
-            
+        },             
     },
 }
 </script>
