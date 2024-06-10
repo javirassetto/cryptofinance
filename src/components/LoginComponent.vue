@@ -15,7 +15,12 @@
       </div>
       <div>
         <label for="password">Contraseña:</label>
-        <input type="password" id="password" v-model="password" />
+        <input
+          type="password"
+          id="password"
+          placeholder="ingrese la contraseña.."
+          v-model="password"
+        />
       </div>
       <button type="submit" :disabled="!isFormValid">Ingresar</button>
     </form>
