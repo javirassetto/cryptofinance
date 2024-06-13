@@ -42,7 +42,7 @@ export default {
     validateUsername() {
       const alphanumericKey = /^[a-z0-9]+$/i;
       if (!alphanumericKey.test(this.username)) {
-        this.usernameError = "El usuario debe ser alfanumerico";
+        this.usernameError = "El usuario debe ser alfanumérico";
         this.isFormValid = false;
       } else {
         this.usernameError = "";
@@ -58,7 +58,7 @@ export default {
   max-width: 300px;
   margin: auto;
   padding: 1em;
-  border: 1px solid #ccc;
+  border: 3px solid #ccc;
   border-radius: 5px;
 }
 div {
