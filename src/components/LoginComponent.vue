@@ -44,9 +44,22 @@ export default {
       if (!alphanumericKey.test(this.username)) {
         this.usernameError = "El usuario debe ser alfanumérico";
         this.isFormValid = false;
+      } else if (this.username.length < 7) {
+        this.usernameError = "El usuario debe tener al menos 7 caracteres";
+        this.isFormValid = false;
       } else {
         this.usernameError = "";
         this.isFormValid = true;
+      }
+    },
+    createUser() {
+      this.validateUsername();
+      if (this.isFormValid || this.username.length > 7) {
+        alert("Se registro correctamente");
+        /*me redirecciono a la vista principal*/
+        this.$router.push({ name: "home" });
+      } else {
+        alert("Error en el inicio de sesión");
       }
     },
   },

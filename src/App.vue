@@ -1,11 +1,22 @@
 <template>
-  <nav>
-    <router-link to="/login">Login</router-link>|
+  <nav v-if="!isLoginView">
+    <router-link to="/login">Cerrar Sesión</router-link>|
     <router-link to="/home">Home</router-link> |
     <router-link to="/about">About</router-link>
   </nav>
   <router-view />
 </template>
+<script>
+export default {
+  name: "App",
+  computed: {
+    isLoginView() {
+      // Verifico si la ruta actual es "/login"
+      return this.$route.path === "/login";
+    },
+  },
+};
+</script>
 
 <style>
 #app {
