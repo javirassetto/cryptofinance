@@ -51,6 +51,7 @@ export default {
   text-align: center;
   color: #2c3e50;
 }
+/* Icono style */
 .icono {
   width: 3%;
   padding: 0.8%;
