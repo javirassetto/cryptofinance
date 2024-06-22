@@ -45,21 +45,21 @@ export default {
     validateUsername() {
       const alphanumericKey = /^[a-z0-9]+$/i;
       if (!alphanumericKey.test(this.username)) {
-        this.usernameError = "El usuario debe ser alfanumérico";
+        this.usernameError = "El usuario debe ser alfanumérico ⛔";
         this.isFormValid = false;
       } else if (this.username.length < 7) {
-        this.usernameError = "El usuario debe tener al menos 7 caracteres";
+        this.usernameError = "⚠️ El usuario debe tener al menos 7 caracteres";
         this.isFormValid = false;
       } else {
-        this.usernameError = "";
+        this.usernameError = "☑️";
       }
     },
     validatePassword() {
       if (this.password.length === 0) {
-        this.PasswordError = "Ingrese una contraseña";
+        this.PasswordError = "⚠️ Ingrese una contraseña";
         this.isFormValid = false;
       } else {
-        this.PasswordError = "";
+        this.PasswordError = "☑️";
         this.isFormValid = true;
       }
     },

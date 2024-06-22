@@ -1,6 +1,7 @@
 <template>
   <nav v-if="!isLoginView" class="navigation">
-    <span class="user-name">Usuario: {{ username }}</span>
+    <img src="./assets/favicon.png" class="icono" title=" cryptoFinance" />
+    <span class="user-name">☑️ Usuario: {{ username }}</span>
     <router-link to="/buyCripto" class="nav-link">Comprar</router-link>
     <router-link to="/sellCripto" class="nav-link">Vender</router-link>
     <router-link to="/login" class="nav-link">Cerrar Sesión</router-link>
@@ -49,6 +50,11 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+.icono {
+  width: 3%;
+  padding: 0.8%;
+  border-radius: 15px;
 }
 .nav-link {
   color: #ecf0f1;
