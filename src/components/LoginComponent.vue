@@ -11,7 +11,7 @@
           placeholder="ingrese el usuario.."
           @input="validateUsername"
         />
-        <span v-if="usernameError">{{ usernameError }}</span>
+        <span v-show="usernameError">{{ usernameError }}</span>
       </div>
       <div>
         <label for="password">Contraseña:</label>
@@ -55,9 +55,8 @@ export default {
     createUser() {
       this.validateUsername();
       if (this.isFormValid || this.username.length > 7) {
-        alert("Se registro correctamente");
         /*me redirecciono a la vista principal*/
-        this.$router.push({ name: "home" });
+        this.$router.push({ name: "buyCripto" });
       } else {
         alert("Error en el inicio de sesión");
       }
@@ -68,30 +67,49 @@ export default {
 
 <style scoped>
 .login {
-  max-width: 300px;
-  margin: auto;
-  padding: 1em;
+  max-width: 400px;
+  margin: 2em auto;
+  padding: 2em;
   border: 3px solid #ccc;
-  border-radius: 5px;
+  border-radius: 10px;
+  background-color: #f0f4f8;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+
+.login h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 1.5em;
+}
+
 div {
-  margin-bottom: 1em;
+  margin-bottom: 1.5em;
 }
+
 label {
   margin-bottom: 0.5em;
-  color: #333333;
+  color: #555;
   display: block;
 }
+
 input {
-  border: 1px solid #cccccc;
+  border: 1px solid #ccc;
   padding: 0.5em;
   font-size: 1em;
   width: calc(100% - 1em);
+  border-radius: 5px;
 }
+
+input:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
 span {
   color: red;
   font-size: 0.8em;
 }
+
 button {
   padding: 0.7em;
   color: #fff;
@@ -99,11 +117,16 @@ button {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  width: 100%;
+  font-size: 1em;
 }
+
 button:disabled {
   background-color: #cccccc;
+  cursor: not-allowed;
 }
-button.hover {
-  background-color: #63788f;
+
+button:hover:not(:disabled) {
+  background-color: #0056b3;
 }
 </style>

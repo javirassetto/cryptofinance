@@ -36,7 +36,7 @@ export default {
   width: 100%;
   max-height: 285px;
   object-fit: cover;
-  /*border-bottom: 3px solid #007bff; /* Agrega un borde inferior para separación */
+  border-bottom: 3px solid rgb(192, 150, 95);
 }
 
 /* Vista de inicio de sesión */
@@ -46,7 +46,7 @@ export default {
   align-items: center;
   flex-grow: 1;
   padding: 20px;
-  background: #f8f9fa; /* Fondo claro */
+  background: #f8f9fa;
 }
 
 .login {
