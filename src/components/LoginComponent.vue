@@ -20,7 +20,9 @@
           id="password"
           placeholder="ingrese la contraseña.."
           v-model="password"
+          @input="validatePassword"
         />
+        <span v-show="PasswordError">{{ PasswordError }}</span>
       </div>
       <button type="submit" :disabled="!isFormValid">Ingresar</button>
     </form>
@@ -35,6 +37,7 @@ export default {
       password: "",
       usernameError: "",
       isFormValid: false,
+      PasswordError: "",
     };
   },
   computed: {},
@@ -49,17 +52,30 @@ export default {
         this.isFormValid = false;
       } else {
         this.usernameError = "";
+      }
+    },
+    validatePassword() {
+      if (this.password.length === 0) {
+        this.PasswordError = "Ingrese una contraseña";
+        this.isFormValid = false;
+      } else {
+        this.PasswordError = "";
         this.isFormValid = true;
       }
     },
     createUser() {
       this.validateUsername();
-      if (this.isFormValid || this.username.length > 7) {
+      if (
+        this.isFormValid &&
+        this.username.length > 7 &&
+        this.password.length > 0
+      ) {
         this.$store.dispatch("login", this.username);
         /*me redirecciono a la vista principal*/
         this.$router.push({ name: "buyCripto" });
       } else {
         alert("Error en el inicio de sesión");
+        this.isFormValid = false;
       }
     },
   },
