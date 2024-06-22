@@ -1,5 +1,6 @@
 <template>
   <nav v-if="!isLoginView" class="navigation">
+    <span class="user-name">Usuario: {{ username }}</span>
     <router-link to="/buyCripto" class="nav-link">Comprar</router-link>
     <router-link to="/sellCripto" class="nav-link">Vender</router-link>
     <router-link to="/login" class="nav-link">Cerrar Sesión</router-link>
@@ -19,6 +20,15 @@ export default {
     isLoginView() {
       // Verifico si la ruta actual es "/login"
       return this.$route.path === "/login";
+    },
+    username() {
+      // retorno el nombre del usuario.
+      return this.$store.getters.getUser;
+    },
+  },
+  methods: {
+    logout() {
+      this.$store.dispatch("logout");
     },
   },
   //Ejemplo con otra Api
@@ -49,7 +59,7 @@ export default {
   background-color: #2d77c0;
   padding: 0rem 1rem;
   display: flex;
-  justify-content: center;
+  justify-content: center !important;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(72, 9, 190, 0.1);
   font-family: Arial, Helvetica, sans-serif;
@@ -81,6 +91,14 @@ export default {
   color: #ecf0f1;
   margin-left: 2rem;
   /*separacion*/
+}
+.user-name {
+  text-align: center;
+  margin-left: 2rem;
+  margin-top: 1rem;
+  margin-right: auto;
+  color: #ecf0f1;
+  font-weight: bold; /*resltando texto*/
 }
 @media (max-width: 600px) {
   .navigation {

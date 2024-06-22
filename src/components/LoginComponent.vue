@@ -55,6 +55,7 @@ export default {
     createUser() {
       this.validateUsername();
       if (this.isFormValid || this.username.length > 7) {
+        this.$store.dispatch("login", this.username);
         /*me redirecciono a la vista principal*/
         this.$router.push({ name: "buyCripto" });
       } else {
