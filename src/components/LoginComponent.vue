@@ -47,6 +47,7 @@ export default {
       if (!alphanumericKey.test(this.username)) {
         this.usernameError = "El usuario debe ser alfanumérico ⛔";
         this.isFormValid = false;
+        this.password = "";
       } else if (this.username.length < 7) {
         this.usernameError = "⚠️ El usuario debe tener al menos 7 caracteres";
         this.isFormValid = false;
@@ -65,17 +66,21 @@ export default {
     },
     createUser() {
       this.validateUsername();
+      this.validatePassword();
       if (
         this.isFormValid &&
         this.username.length > 7 &&
         this.password.length > 0
       ) {
+        /* despacho el nombre del usuario a "store action login" */
         this.$store.dispatch("login", this.username);
         /*me redirecciono a la vista principal*/
         this.$router.push({ name: "buyCripto" });
       } else {
         alert("Error en el inicio de sesión");
         this.isFormValid = false;
+        this.username = "";
+        this.password = "";
       }
     },
   },

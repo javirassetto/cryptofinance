@@ -57,11 +57,6 @@ export default {
   padding: 0.8%;
   border-radius: 15px;
 }
-.nav-link {
-  color: #ecf0f1;
-  text-decoration: none;
-  border-radius: 4px;
-}
 .navigation {
   background-color: #2d77c0;
   padding: 0rem 1rem;
@@ -75,6 +70,7 @@ export default {
 
 .nav-link {
   color: #ecf0f1;
+  text-decoration: none;
   margin: 0 0rem;
   padding: 1rem 1rem;
   border-radius: 4px;
@@ -84,13 +80,11 @@ export default {
 }
 
 .nav-link:hover {
-  background-color: #447ab1;
-  color: #ffffff;
+  color: #03090f;
 }
 
 .nav-link:active {
   background-color: #1a25bc;
-  color: #ffffff;
 }
 
 .nav-link:not(:last-child)::after {
@@ -106,36 +100,5 @@ export default {
   margin-right: auto;
   color: #ecf0f1;
   font-weight: bold; /*resltando texto*/
-}
-@media (max-width: 600px) {
-  .navigation {
-    flex-direction: column;
-    align-items: flex-start;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: large;
-  }
-
-  .nav-link {
-    margin: 0.5rem 0;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: large;
-  }
-
-  .nav-link:not(:last-child)::after {
-    content: none;
-  }
-  /*anterior */
-  nav {
-    padding: 10px;
-  }
-
-  nav a {
-    font-weight: bold;
-    color: #2c3e50;
-  }
-
-  nav a.router-link-exact-active {
-    color: #42b983;
-  }
 }
 </style>
