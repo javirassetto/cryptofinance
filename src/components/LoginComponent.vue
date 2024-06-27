@@ -51,6 +51,7 @@ export default {
       } else if (this.username.length < 7) {
         this.usernameError = "⚠️ El usuario debe tener al menos 7 caracteres";
         this.isFormValid = false;
+        this.password = "";
       } else {
         this.usernameError = "☑️";
       }
