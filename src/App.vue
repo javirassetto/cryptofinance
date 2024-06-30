@@ -2,8 +2,11 @@
   <nav v-if="!isLoginView" class="navigation">
     <img src="./assets/favicon.png" class="icono" title=" cryptoFinance" />
     <span class="user-name">☑️ Usuario: {{ username }}</span>
-    <router-link to="/buyCripto" class="nav-link">Comprar</router-link>
-    <router-link to="/sellCripto" class="nav-link">Vender</router-link>
+    <router-link to="/coinInfo" class="nav-link">Inicio</router-link>
+    <router-link to="/buyAndSell" class="nav-link">Nueva Operación</router-link>
+    <router-link to="/movementHistory" class="nav-link"
+      >Mis Movimientos</router-link
+    >
     <router-link to="/login" class="nav-link">Cerrar Sesión</router-link>
   </nav>
   <h1 v-if="!isLoginView">{{ title.toUpperCase() }}</h1>

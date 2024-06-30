@@ -76,7 +76,7 @@ export default {
         /* despacho el nombre del usuario a "store action login" */
         this.$store.dispatch("login", this.username);
         /*me redirecciono a la vista principal*/
-        this.$router.push({ name: "buyCripto" });
+        this.$router.push({ name: "coinInfo" });
       } else {
         alert("Error en el inicio de sesión");
         this.isFormValid = false;

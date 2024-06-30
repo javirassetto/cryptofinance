@@ -36,6 +36,18 @@
         </td>
       </tr>
     </table>
+    <!-- Vista pequeña -->
+    <div v-if="selectedCoin !== null && smallView" class="overlay">
+      <div class="selected-coin-view">
+        <h3>Detalles de la criptomoneda</h3>
+        <img :src="selectedCoin.image" class="selected-coin-image" />
+        <p><b>Nombre:</b> {{ selectedCoin.name }}</p>
+        <p><b>Símbolo:</b> {{ selectedCoin.symbol.toUpperCase() }}</p>
+        <p><b>Precio actual:</b> ${{ selectedCoin.current_price }}</p>
+        <p><b>Ranking de mercado:</b> {{ selectedCoin.market_cap_rank }}°</p>
+        <button class="close-btn" @click="closeSelectedCoin">Cerrar</button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -51,6 +63,7 @@ export default {
       error: null,
       selectedCoin: null,
       hover: null,
+      smallView: false,
     };
   },
   created() {
@@ -74,15 +87,11 @@ export default {
       }
     },
     selectCoin(index) {
-      alert("Cripto N°" + (index + 1));
+      this.selectedCoin = this.coinData[index];
+      this.smallView = true;
     },
-    handleSelect() {
-      if (this.selectedCoin !== null) {
-        const selectedCoin = this.coinData[this.selectedCoin];
-        alert(
-          `Seleccionaste ${selectedCoin.name} - Precio: $${selectedCoin.current_price}`
-        );
-      }
+    closeSelectedCoin() {
+      this.selectedCoin = null;
     },
     limitedCoinData() {
       return this.coinData.slice(0, 10);
@@ -99,6 +108,7 @@ export default {
   margin-left: auto;
   margin-right: auto;
   background-color: black;
+  cursor: pointer;
 }
 
 th,
@@ -127,5 +137,51 @@ tr.hover {
   width: 2rem;
   margin: 1px;
   padding: 0px;
+}
+.crypto-data {
+  position: relative;
+}
+/* estilos para la vista pequeña */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 10;
+}
+
+.selected-coin-view {
+  background-color: white;
+  border: 2px solid #ccc;
+  padding: 20px;
+  border-radius: 5px;
+  width: 300px;
+  position: relative;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.selected-coin-image {
+  max-width: 100px;
+  margin-bottom: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.459);
+  border-radius: 50%;
+}
+
+.close-btn {
+  background-color: #007bff;
+  border-radius: 4px;
+  color: #fff;
+  border: none;
+  font-size: 19px;
+  cursor: pointer;
+  font-weight: bold;
+}
+.close-btn:hover {
+  background-color: #0056b3;
 }
 </style>

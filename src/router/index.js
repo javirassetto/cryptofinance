@@ -1,7 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
-import BuyView from "@/views/BuyView";
+import CoinView from "@/views/CoinView.vue";
 import LoginView from "@/views/LoginView.vue";
-import SellView from "@/views/SellView";
+import MovementHistoryView from "@/views/MovementHistoryView.vue";
+import BuyAndSell from "@/views/BuyAndSell.vue";
 
 const routes = [
   {
@@ -14,14 +15,19 @@ const routes = [
     component: LoginView,
   },
   {
-    path: "/buyCripto",
-    name: "buyCripto",
-    component: BuyView,
+    path: "/buyAndSell",
+    name: "buyAndSell",
+    component: BuyAndSell,
   },
   {
-    path: "/sellCripto",
-    name: "sellCripto",
-    component: SellView,
+    path: "/coinInfo",
+    name: "coinInfo",
+    component: CoinView,
+  },
+  {
+    path: "/movementHistory",
+    name: "movementHistory",
+    component: MovementHistoryView,
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.

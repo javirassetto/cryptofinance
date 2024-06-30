@@ -1,16 +1,15 @@
 <template>
-  <h3>Compra tus Crypto</h3>
-  <div class="Buy">
+  <h3>Consulta el precio de las Criptomonedas</h3>
+  <div class="init">
     <CoinInfo />
   </div>
-  <div></div>
 </template>
 
 <script>
 // @ is an alias to /src
 import CoinInfo from "@/components/CoinInfo.vue";
 export default {
-  name: "BuyCoin",
+  name: "CoinView",
   components: {
     CoinInfo,
   },
