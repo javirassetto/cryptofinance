@@ -4,7 +4,7 @@
     <form @submit.prevent="handleTransaction">
       <div>
         <label for="action">Tipo de Operación: </label>
-        <select v-model="action">
+        <select v-model.trim="action" required>
           <option disabled selected value="">Seleccione una operación</option>
           <option value="purchase">Compra</option>
           <option value="sale">Venta</option>
@@ -13,7 +13,7 @@
       <div>
         <label for="crypto">Criptomoneda: </label>
         <select v-model.trim="crypto_code" required>
-          <option disabled selected value="">Seleccione una crypto</option>
+          <option disabled selected value="">Seleccione una crypto..</option>
           <option value="btc">Bitcoin (BTC)</option>
           <option value="eth">Ethereum (ETH)</option>
           <option value="usdt">Tether (USDT)</option>
@@ -23,23 +23,27 @@
       <div>
         <label for="amount">Cantidad: </label>
         <input
-          type="number"
+          type="decimal"
           v-model="crypto_amount"
-          placeholder="Ingrese la cantidad"
+          placeholder="Ingrese la cantidad.."
         />
       </div>
       <div>
         <label for="money">Monto en ARS: </label>
         <input
-          type="number"
+          type="decimal"
           v-model="money"
           placeholder="Ingrese el monto en $"
         />
       </div>
+      <!-- <div>
+        <label for="datetime">Ingrese la fecha: </label>
+        <input type="datetime-local" v-model="datetime" required />
+      </div> -->
       <button type="submit">Registrar Transacción</button>
     </form>
     <div>
-      <h3>Historial de Transacciones</h3>
+      <h3>Tu última Transacción</h3>
       <div v-if="loading">Cargando...</div>
       <table v-if="transactions.length > 0">
         <thead>
@@ -52,17 +56,17 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="transaction in transactions" :key="transaction._id">
-            <td>{{ transaction.crypto_code.toUpperCase() }}</td>
-            <td>{{ transaction.crypto_amount }}</td>
-            <td>${{ transaction.money }}</td>
-            <td>{{ transaction.action }}</td>
-            <td>{{ transaction.datetime }}</td>
+          <tr>
+            <td>{{ latestTransaction.crypto_code }}</td>
+            <td>{{ latestTransaction.crypto_amount }}</td>
+            <td>${{ latestTransaction.money }}</td>
+            <td>{{ latestTransaction.action }}</td>
+            <td>{{ latestTransaction.datetime }}</td>
           </tr>
         </tbody>
       </table>
       <div v-else>
-        <p>No hay transacciones para mostrar...</p>
+        <p>No hay transacciones recientes para mostrar...</p>
       </div>
       <button type="button" style="margin: 10px" @click="isMovementView()">
         Ir a mis movimientos
@@ -81,10 +85,18 @@ export default {
       crypto_code: "",
       crypto_amount: "",
       money: "",
-      action: "purchase",
+      action: "",
+      datetime: "",
       transactions: [],
       loading: false,
     };
+  },
+  computed: {
+    latestTransaction() {
+      return this.transactions.length > 0
+        ? this.transactions[this.transactions.length - 1]
+        : null;
+    },
   },
   created() {
     this.fetchTransactions();
@@ -96,7 +108,7 @@ export default {
         alert("Todos los campos son obligatorios");
         return;
       }
-      if (this.crypto_amount < 1 || this.money < 1) {
+      if (this.crypto_amount < 0.01 || this.money < 0.01) {
         alert("Tanto la cantidad como el monto deben ser numeros mayores a 0");
         return;
       }
@@ -106,7 +118,7 @@ export default {
         crypto_code: this.crypto_code,
         crypto_amount: this.crypto_amount,
         money: this.money,
-        datetime: this.getFormattedDateTime(new Date()),
+        datetime: this.myDateTime(),
       };
       try {
         await createTransaction(transaction);
@@ -126,17 +138,17 @@ export default {
         this.loading = false;
       }
     },
-    //funcion para obtener dateTime
-    getFormattedDateTime(date) {
-      const day = String(date.getDate()).padStart(2, "0");
-      const month = String(date.getMonth() + 1).padStart(2, "0");
-      const year = date.getFullYear();
-      const hours = String(date.getHours()).padStart(2, "0");
-      const minutes = String(date.getMinutes()).padStart(2, "0");
-      return `${day}-${month}-${year} ${hours}:${minutes}`;
-    },
     isMovementView() {
       return this.$router.push({ name: "movementHistory" });
+    },
+    myDateTime() {
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = `${now.getMonth() + 1}`.padStart(2, "0");
+      const day = `${now.getDate()}`.padStart(2, "0");
+      const hour = `${now.getHours()}`.padStart(2, "0");
+      const minute = `${now.getMinutes()}`.padStart(2, "0");
+      return `${year}-${month}-${day}  ${hour}:${minute}`;
     },
   },
 };

@@ -65,6 +65,15 @@
               required
             />
           </div>
+          <!-- <div>
+            <label for="datetime">Ingrese la fecha: </label>
+            <input
+              v-model="datetime"
+              type="datetime-local"
+              id="datetime"
+              required
+            />
+          </div> -->
           <div>
             <label for="action">Acción: </label>
             <select v-model="action" id="action" required>
@@ -109,7 +118,8 @@ export default {
       crypto_code: "",
       crypto_amount: "",
       money: "",
-      action: "purchase",
+      action: "",
+      datetime: "",
       transactions: [],
       loading: false,
       isEditing: false,
@@ -129,7 +139,7 @@ export default {
         crypto_code: this.crypto_code,
         crypto_amount: this.crypto_amount,
         money: this.money,
-        datetime: new Date().toLocaleString("en-GB", { timeZone: "UTC" }),
+        datetime: this.myDateTime(),
       };
       try {
         if (this.isEditing && this.editingTransaction) {
@@ -162,6 +172,7 @@ export default {
       this.crypto_amount = transaction.crypto_amount;
       this.money = transaction.money;
       this.action = transaction.action;
+      this.datetime = transaction.datetime;
     },
     cancelEdit() {
       this.isEditing = false;
@@ -169,7 +180,8 @@ export default {
       this.crypto_code = "";
       this.crypto_amount = "";
       this.money = "";
-      this.action = "purchase";
+      this.action = "";
+      this.datetime = "";
     },
     confirmDelete(transactionId) {
       this.isDelete = true;
@@ -189,6 +201,15 @@ export default {
       } catch (error) {
         console.error("Error eliminando la transacción:", error);
       }
+    },
+    myDateTime() {
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = `${now.getMonth() + 1}`.padStart(2, "0");
+      const day = `${now.getDate()}`.padStart(2, "0");
+      const hour = `${now.getHours()}`.padStart(2, "0");
+      const minute = `${now.getMinutes()}`.padStart(2, "0");
+      return `${year}-${month}-${day}  ${hour}:${minute}`;
     },
   },
 };
