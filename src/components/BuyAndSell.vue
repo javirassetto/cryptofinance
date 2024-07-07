@@ -24,15 +24,19 @@
         <label for="amount">Cantidad: </label>
         <input
           type="number"
-          step="0.1"
-          min="0.000001"
           v-model="crypto_amount"
           placeholder="Ingrese la cantidad.."
+          @input="calculatePrice"
         />
       </div>
       <div>
         <label for="money">Monto en ARS: </label>
-        <input type="number" v-model="money" placeholder="Su monto es..." />
+        <input
+          type="number"
+          v-model="money"
+          placeholder="Su monto es..."
+          readonly
+        />
       </div>
       <!-- <div>
         <label for="datetime">Ingrese la fecha: </label>
@@ -54,7 +58,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <tr v-if="latestTransaction">
             <td>{{ latestTransaction.crypto_code.toUpperCase() }}</td>
             <td>{{ latestTransaction.crypto_amount }}</td>
             <td>${{ latestTransaction.money }}</td>
@@ -74,7 +78,11 @@
 </template>
 
 <script>
-import { createTransaction, getTransactions } from "@/services/apiService";
+import {
+  createTransaction,
+  getTransactions,
+  getCryptoPrice,
+} from "@/services/apiService";
 
 export default {
   name: "BuyandSell",
@@ -108,23 +116,24 @@ export default {
   methods: {
     async handleTransaction() {
       const userId = this.$store.getters.getUser;
-      if (!this.crypto_code || !this.crypto_amount || !this.money) {
+      if (!this.crypto_code || !this.crypto_amount) {
         alert("Todos los campos son obligatorios");
         return;
       }
-      if (this.crypto_amount < 0.01 || this.money < 0.01) {
+      if (this.crypto_amount < 0.000001) {
         alert("Tanto la cantidad como el monto deben ser numeros mayores a 0");
         return;
       }
-      const transaction = {
-        user_id: userId,
-        action: this.action,
-        crypto_code: this.crypto_code,
-        crypto_amount: this.crypto_amount,
-        money: this.money,
-        datetime: new Date().toISOString(),
-      };
       try {
+        const transaction = {
+          user_id: userId,
+          action: this.action,
+          crypto_code: this.crypto_code,
+          crypto_amount: this.crypto_amount,
+          money: this.money,
+          datetime: new Date().toISOString(),
+        };
+
         await createTransaction(transaction);
         this.fetchTransactions();
         this.cleanForm();
@@ -158,6 +167,38 @@ export default {
       return this.transactions
         .slice()
         .sort((a, b) => new Date(b.datetime) - new Date(a.datetime));
+    },
+    async calculatePrice() {
+      if (this.crypto_code && this.crypto_amount && this.action) {
+        try {
+          const cryptoValue = await getCryptoPrice(
+            this.crypto_code,
+            this.action
+          );
+          const calculatedMoney = this.crypto_amount * cryptoValue;
+          // Asegúrate de que el valor calculado es un número válido
+          if (!isNaN(calculatedMoney)) {
+            this.money = calculatedMoney.toFixed(2);
+          } else {
+            this.money = "";
+          }
+        } catch (error) {
+          console.error("Error al calcular el precio:", error);
+        }
+      } else {
+        this.money = "";
+      }
+    },
+  },
+  watch: {
+    action() {
+      this.calculatePrice();
+    },
+    crypto_code() {
+      this.calculatePrice();
+    },
+    crypto_amount() {
+      this.calculatePrice();
     },
   },
 };

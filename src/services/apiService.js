@@ -26,20 +26,21 @@ const apiClient = axios.create({
 });
 
 // Axios para la API de Buenbit
-const buenbitApi = axios.create({
-  baseURL: "https://criptoya.com/api",
-});
-
-// Obtengo datos de Buenbit VER
-export const getBuenbitData = async () => {
+const apiCriptoya = "https://criptoya.com/api/buenbit/";
+// Obtengo el precio de la api Buenbit
+export const getCryptoPrice = async (crypto, action) => {
   try {
-    const response = await buenbitApi.get("/buenbit");
-    return response.data;
+    const response = await axios.get(
+      `${apiCriptoya}${crypto.toLowerCase()}/ars/0.1`
+    );
+    return action === "purchase" ? response.data.ask : response.data.bid;
   } catch (error) {
-    console.error("Error fetching data from Buenbit API:", error);
+    console.error("Error when fetching crypto prices:", error);
     throw error;
   }
 };
+
+//-------------
 
 // Obtengo datos de CoinGecko
 export const getCryptoData = async () => {
@@ -90,7 +91,7 @@ export const deleteTransactionById = async (transactionId) => {
   }
 };
 
-// Actualizar una transacción
+// Actualizo una transacción
 export const updateTransaction = async (transactionId, transaction) => {
   try {
     const response = await apiClient.put(
@@ -106,7 +107,7 @@ export const updateTransaction = async (transactionId, transaction) => {
 
 //Exporto
 export default {
-  getBuenbitData,
+  getCryptoPrice,
   getCryptoData,
   createTransaction,
   getTransactions,

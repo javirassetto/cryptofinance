@@ -210,15 +210,6 @@ export default {
         console.error("Error eliminando la transacción:", error);
       }
     },
-    myDateTime() {
-      const now = new Date();
-      const year = now.getFullYear();
-      const month = `${now.getMonth() + 1}`.padStart(2, "0");
-      const day = `${now.getDate()}`.padStart(2, "0");
-      const hour = `${now.getHours()}`.padStart(2, "0");
-      const minute = `${now.getMinutes()}`.padStart(2, "0");
-      return `${year}-${month}-${day}  ${hour}:${minute}`;
-    },
     orderTransctions() {
       return this.transactions
         .slice()
