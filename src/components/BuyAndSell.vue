@@ -23,18 +23,16 @@
       <div>
         <label for="amount">Cantidad: </label>
         <input
-          type="decimal"
+          type="number"
+          step="0.1"
+          min="0.000001"
           v-model="crypto_amount"
           placeholder="Ingrese la cantidad.."
         />
       </div>
       <div>
         <label for="money">Monto en ARS: </label>
-        <input
-          type="decimal"
-          v-model="money"
-          placeholder="Ingrese el monto en $"
-        />
+        <input type="number" v-model="money" placeholder="Su monto es..." />
       </div>
       <!-- <div>
         <label for="datetime">Ingrese la fecha: </label>
@@ -57,7 +55,7 @@
         </thead>
         <tbody>
           <tr>
-            <td>{{ latestTransaction.crypto_code }}</td>
+            <td>{{ latestTransaction.crypto_code.toUpperCase() }}</td>
             <td>{{ latestTransaction.crypto_amount }}</td>
             <td>${{ latestTransaction.money }}</td>
             <td>{{ latestTransaction.action }}</td>
@@ -92,10 +90,16 @@ export default {
     };
   },
   computed: {
+    sortedTransactions() {
+      return this.transactions
+        .slice()
+        .sort((a, b) => new Date(b.datetime) - new Date(a.datetime));
+    },
     latestTransaction() {
-      return this.transactions.length > 0
-        ? this.transactions[this.transactions.length - 1]
-        : null;
+      if (this.transactions.length === 0) return null;
+      return this.transactions
+        .slice()
+        .sort((a, b) => new Date(b.datetime) - new Date(a.datetime))[0];
     },
   },
   created() {
@@ -118,11 +122,12 @@ export default {
         crypto_code: this.crypto_code,
         crypto_amount: this.crypto_amount,
         money: this.money,
-        datetime: this.myDateTime(),
+        datetime: new Date().toISOString(),
       };
       try {
         await createTransaction(transaction);
         this.fetchTransactions();
+        this.cleanForm();
         alert("Transacción registrada exitosamente");
       } catch (error) {
         console.error("Error registrando la transacción:", error);
@@ -132,6 +137,7 @@ export default {
       this.loading = true;
       try {
         this.transactions = await getTransactions();
+        this.orderTransctions();
       } catch (error) {
         console.error("Error obteniendo transacciones:", error);
       } finally {
@@ -141,14 +147,17 @@ export default {
     isMovementView() {
       return this.$router.push({ name: "movementHistory" });
     },
-    myDateTime() {
-      const now = new Date();
-      const year = now.getFullYear();
-      const month = `${now.getMonth() + 1}`.padStart(2, "0");
-      const day = `${now.getDate()}`.padStart(2, "0");
-      const hour = `${now.getHours()}`.padStart(2, "0");
-      const minute = `${now.getMinutes()}`.padStart(2, "0");
-      return `${year}-${month}-${day}  ${hour}:${minute}`;
+    cleanForm() {
+      this.crypto_code = "";
+      this.crypto_amount = "";
+      this.money = "";
+      this.action = "";
+      this.datetime = "";
+    },
+    orderTransctions() {
+      return this.transactions
+        .slice()
+        .sort((a, b) => new Date(b.datetime) - new Date(a.datetime));
     },
   },
 };

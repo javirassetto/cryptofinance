@@ -13,7 +13,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="transaction in transactions" :key="transaction._id">
+        <tr v-for="transaction in sortedTransactions" :key="transaction._id">
           <td>{{ transaction.crypto_code.toUpperCase() }}</td>
           <td>{{ transaction.crypto_amount }}</td>
           <td>${{ transaction.money }}</td>
@@ -128,6 +128,13 @@ export default {
       deleteTransactionId: null,
     };
   },
+  computed: {
+    sortedTransactions() {
+      return this.transactions
+        .slice()
+        .sort((a, b) => new Date(b.datetime) - new Date(a.datetime));
+    },
+  },
   created() {
     this.fetchTransactions();
   },
@@ -139,7 +146,7 @@ export default {
         crypto_code: this.crypto_code,
         crypto_amount: this.crypto_amount,
         money: this.money,
-        datetime: this.myDateTime(),
+        datetime: new Date().toISOString(),
       };
       try {
         if (this.isEditing && this.editingTransaction) {
@@ -159,6 +166,7 @@ export default {
       this.loading = true;
       try {
         this.transactions = await getTransactions();
+        this.orderTransctions();
       } catch (error) {
         console.error("Error obteniendo transacciones:", error);
       } finally {
@@ -210,6 +218,11 @@ export default {
       const hour = `${now.getHours()}`.padStart(2, "0");
       const minute = `${now.getMinutes()}`.padStart(2, "0");
       return `${year}-${month}-${day}  ${hour}:${minute}`;
+    },
+    orderTransctions() {
+      return this.transactions
+        .slice()
+        .sort((a, b) => new Date(b.datetime) - new Date(a.datetime));
     },
   },
 };
