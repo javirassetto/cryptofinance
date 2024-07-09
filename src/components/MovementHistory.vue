@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="Movement-History">
     <div v-if="loading">Cargando...</div>
     <table v-if="transactions.length > 0">
       <thead>
@@ -17,7 +17,9 @@
           <td>{{ transaction.crypto_code.toUpperCase() }}</td>
           <td>{{ transaction.crypto_amount }}</td>
           <td>${{ transaction.money }}</td>
-          <td>{{ transaction.action }}</td>
+          <td>
+            {{ transaction.action === "purchase" ? "Compra" : "Venta" }}
+          </td>
           <td>{{ transaction.datetime }}</td>
           <td>
             <button @click="editTransaction(transaction)">Editar</button>
@@ -27,7 +29,7 @@
       </tbody>
     </table>
     <div v-else>
-      <p>No hay transacciones para mostrar...</p>
+      <p v-if="!loading">No hay transacciones para mostrar...</p>
     </div>
     <!-- Div Modal para editar transacción -->
     <div v-if="isEditing" class="modal">
@@ -220,6 +222,11 @@ export default {
 </script>
 
 <style scoped>
+.Movement-History {
+  padding: 15px;
+  margin-left: auto;
+  margin-right: auto;
+}
 /*ver estilos para option */
 .option {
   color: rgba(10, 22, 133, 0.795);

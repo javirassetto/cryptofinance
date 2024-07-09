@@ -1,6 +1,6 @@
 <template>
   <div class="Movement">
-    <h3>Historial de Transacciones</h3>
+    <h2>Historial de Transacciones</h2>
   </div>
   <div>
     <MovementHistory />
