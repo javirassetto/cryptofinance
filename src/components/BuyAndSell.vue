@@ -6,8 +6,13 @@
         <label for="action">Tipo de Operación: </label>
         <select v-model.trim="action" required>
           <option disabled selected value="">Seleccione una operación</option>
-          <option value="purchase">Compra</option>
-          <option value="sale">Venta</option>
+          <option
+            v-for="option in actionOptions"
+            :key="option.value"
+            :value="option.value"
+          >
+            {{ option.label }}
+          </option>
         </select>
       </div>
       <div>
@@ -24,7 +29,9 @@
         <label for="amount">Cantidad: </label>
         <input
           type="number"
-          v-model="crypto_amount"
+          step="any"
+          min="0.000001"
+          v-model.number="crypto_amount"
           placeholder="Ingrese la cantidad.."
           @input="calculatePrice"
         />
@@ -33,6 +40,8 @@
         <label for="money">Monto en ARS: </label>
         <input
           type="number"
+          step="any"
+          min="0.000001"
           v-model="money"
           placeholder="Su monto es..."
           readonly
@@ -62,13 +71,15 @@
             <td>{{ latestTransaction.crypto_code.toUpperCase() }}</td>
             <td>{{ latestTransaction.crypto_amount }}</td>
             <td>${{ latestTransaction.money }}</td>
-            <td>{{ latestTransaction.action }}</td>
+            <td>
+              {{ latestTransaction.action === "purchase" ? "Compra" : "Venta" }}
+            </td>
             <td>{{ latestTransaction.datetime }}</td>
           </tr>
         </tbody>
       </table>
       <div v-else>
-        <p>No hay transacciones recientes para mostrar...</p>
+        <p v-if="!loading">No hay transacciones recientes para mostrar...</p>
       </div>
       <button type="button" style="margin: 10px" @click="isMovementView()">
         Ir a mis movimientos
@@ -95,6 +106,10 @@ export default {
       datetime: "",
       transactions: [],
       loading: false,
+      actionOptions: [
+        { value: "purchase", label: "Compra" },
+        { value: "sale", label: "Venta" },
+      ],
     };
   },
   computed: {
@@ -120,8 +135,8 @@ export default {
         alert("Todos los campos son obligatorios");
         return;
       }
-      if (this.crypto_amount < 0.000001) {
-        alert("Tanto la cantidad como el monto deben ser numeros mayores a 0");
+      if (this.crypto_amount <= 0) {
+        alert("La cantidad deben ser un numero mayor a 0");
         return;
       }
       try {
@@ -176,7 +191,7 @@ export default {
             this.action
           );
           const calculatedMoney = this.crypto_amount * cryptoValue;
-          // Asegúrate de que el valor calculado es un número válido
+          // error de consola el valor calculado es un número válido
           if (!isNaN(calculatedMoney)) {
             this.money = calculatedMoney.toFixed(2);
           } else {
@@ -205,7 +220,7 @@ export default {
 </script>
 <style scoped>
 .buy-and-sell {
-  max-width: 600px;
+  max-width: 800px;
   margin: 0 auto;
   padding: 2rem;
   background-color: #f9f9f9;
@@ -230,6 +245,9 @@ export default {
   border-radius: 4px;
 }
 .buy-and-sell button {
+  width: 400px;
+  margin-right: auto;
+  margin-left: auto;
   padding: 0.75rem;
   border: none;
   border-radius: 4px;
