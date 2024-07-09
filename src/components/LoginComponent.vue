@@ -23,6 +23,7 @@
           @input="validatePassword"
         />
         <span v-show="PasswordError">{{ PasswordError }}</span>
+        <span @change="validateForm"></span>
       </div>
       <button type="submit" :disabled="!isFormValid">Ingresar</button>
     </form>
@@ -40,29 +41,32 @@ export default {
       PasswordError: "",
     };
   },
-  computed: {},
   methods: {
     validateUsername() {
-      const alphanumericKey = /^[a-z0-9]+$/i;
+      const alphanumericKey = /^[a-z0-9_@.]+$/i;
       if (!alphanumericKey.test(this.username)) {
         this.usernameError = "El usuario debe ser alfanumérico ⛔";
         this.isFormValid = false;
         this.password = "";
+        this.PasswordError = "";
       } else if (this.username.length < 7) {
         this.usernameError = "⚠️ El usuario debe tener al menos 7 caracteres";
         this.isFormValid = false;
         this.password = "";
+        this.PasswordError = "";
       } else {
         this.usernameError = "☑️";
       }
     },
     validatePassword() {
-      if (this.password.length === 0) {
-        this.PasswordError = "⚠️ Ingrese una contraseña";
-        this.isFormValid = false;
-      } else {
-        this.PasswordError = "☑️";
-        this.isFormValid = true;
+      if (this.username.length > 7) {
+        if (this.password.length === 0) {
+          this.PasswordError = "⚠️ Ingrese una contraseña";
+          this.isFormValid = false;
+        } else {
+          this.PasswordError = "☑️";
+          this.isFormValid = true;
+        }
       }
     },
     createUser() {
