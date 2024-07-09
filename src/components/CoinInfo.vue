@@ -3,38 +3,52 @@
     <div v-if="loading">Cargando...</div>
     <div v-if="error" class="error">{{ error }}</div>
     <br />
-    <h4>
+    <h3>
       <b v-if="coinData.length" style="text-align: center">Criptomonedas</b>
-    </h4>
-    <table class="table">
-      <tr
-        v-for="(coin, index) in limitedCoinData()"
-        :key="coin._id"
-        @mouseover="hover = index"
-        @mouseleave="hover = null"
-        :class="{ hover: hover === index }"
-      >
-        <th class="static-th" style="padding-left: 30px">
-          <p>{{ coin.market_cap_rank }}°</p>
-        </th>
+    </h3>
+    <table v-if="coinData.length" class="table">
+      <thead>
+        <tr class="tr-title">
+          <th>Ranking</th>
+          <th>Símbolo</th>
+          <th>Nombre</th>
+          <th>Precio</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          v-for="(coin, index) in limitedCoinData()"
+          :key="coin._id"
+          @mouseover="hover = index"
+          @mouseleave="hover = null"
+          :class="{ hover: hover === index }"
+        >
+          <th class="static-th" style="padding-left: 30px">
+            <p>{{ coin.market_cap_rank }}°</p>
+          </th>
 
-        <td v-if="coinData.length" @click="selectCoin(index)" class="coin-cell">
-          <img :src="coin.image" class="coin-image" /><br />
-        </td>
-        <td @click="selectCoin(index)">
-          <span>
-            <b>{{ coin.name }}</b>
-          </span>
-          <span class="span-symbol">
-            {{ coin.symbol.toUpperCase() }}
-          </span>
-        </td>
-        <td @click="selectCoin(index)">
-          <span>
-            <b>${{ coin.current_price }}</b>
-          </span>
-        </td>
-      </tr>
+          <th
+            v-if="coinData.length"
+            @click="selectCoin(index)"
+            class="coin-cell"
+          >
+            <img :src="coin.image" class="coin-image" /><br />
+          </th>
+          <th @click="selectCoin(index)">
+            <span>
+              <b>{{ coin.name }}</b>
+            </span>
+            <span class="span-symbol">
+              {{ coin.symbol.toUpperCase() }}
+            </span>
+          </th>
+          <th @click="selectCoin(index)">
+            <span>
+              <b>${{ coin.current_price }}</b>
+            </span>
+          </th>
+        </tr>
+      </tbody>
     </table>
     <!-- Vista pequeña -->
     <div v-if="selectedCoin !== null && smallView" class="overlay">
@@ -97,11 +111,21 @@ export default {
       return this.coinData.slice(0, 10);
     },
   },
+  watchEffect: {
+    rechargeMe() {
+      this.fetchCryptoData();
+    },
+  },
 };
 </script>
 
 <style scoped>
 /* Estilos para la tabla y las celdas de las monedas */
+.tr-title {
+  background-color: rgba(53, 51, 51, 0.651);
+  color: rgb(160, 138, 16);
+  font-weight: bold;
+}
 .table {
   width: 95%;
   border-collapse: collapse;
@@ -109,6 +133,7 @@ export default {
   margin-right: auto;
   background-color: black;
   cursor: pointer;
+  border-radius: 8px;
 }
 
 th,
