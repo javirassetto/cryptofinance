@@ -1,5 +1,5 @@
-// views/BuyandSellView.vue
 <template>
+  <h2>Compra & Vende tus Cryptos</h2>
   <div>
     <BuyAndSell />
   </div>

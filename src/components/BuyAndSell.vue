@@ -1,6 +1,5 @@
 <template>
   <div class="buy-and-sell">
-    <h2>Compra & Vende tus Cryptos</h2>
     <form @submit.prevent="handleTransaction">
       <div>
         <label for="action">Tipo de Operación: </label>
