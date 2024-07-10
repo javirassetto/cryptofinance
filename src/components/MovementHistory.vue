@@ -38,6 +38,13 @@
         <h3>Editar Transacción</h3>
         <form @submit.prevent="handleTransaction">
           <div>
+            <label for="action">Acción: </label>
+            <select v-model.trim="action" id="action" required>
+              <option value="purchase">Compra</option>
+              <option value="sale">Venta</option>
+            </select>
+          </div>
+          <div>
             <label for="crypto_code">Criptomoneda: </label>
             <select v-model.trim="crypto_code" id="crypto_code" required>
               <option disabled selected value="">Seleccione una crypto</option>
@@ -50,21 +57,24 @@
           <div>
             <label for="crypto_amount">Cantidad: </label>
             <input
-              v-model="crypto_amount"
+              v-model.number="crypto_amount"
               type="number"
-              step="0.0001"
+              step="any"
+              min="0.000001"
               id="crypto_amount"
+              @input="calculatePrice"
               required
             />
           </div>
           <div>
-            <label for="money">Dinero: </label>
+            <label for="money">Monto en ARS: </label>
             <input
               v-model="money"
               type="number"
-              step="0.01"
+              step="any"
+              min="0.000001"
               id="money"
-              required
+              readonly
             />
           </div>
           <!-- <div>
@@ -76,13 +86,6 @@
               required
             />
           </div> -->
-          <div>
-            <label for="action">Acción: </label>
-            <select v-model="action" id="action" required>
-              <option value="purchase">Compra</option>
-              <option value="sale">Venta</option>
-            </select>
-          </div>
           <div>
             <button type="submit">Guardar</button>
             <button type="button" @click="cancelEdit">Cancelar</button>
@@ -112,6 +115,7 @@ import {
   deleteTransactionById,
   updateTransaction,
 } from "@/services/apiService";
+import { calculatePrice } from "@/utils/calculatePrice";
 
 export default {
   name: "MovementHistory",
@@ -216,6 +220,24 @@ export default {
       return this.transactions
         .slice()
         .sort((a, b) => new Date(b.datetime) - new Date(a.datetime));
+    },
+    async validateAndCalculatePrice() {
+      this.money = await calculatePrice(
+        this.crypto_code,
+        this.crypto_amount,
+        this.action
+      );
+    },
+  },
+  watch: {
+    action() {
+      this.validateAndCalculatePrice();
+    },
+    crypto_code() {
+      this.validateAndCalculatePrice();
+    },
+    crypto_amount() {
+      this.validateAndCalculatePrice();
     },
   },
 };

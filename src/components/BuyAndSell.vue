@@ -88,11 +88,8 @@
 </template>
 
 <script>
-import {
-  createTransaction,
-  getTransactions,
-  getCryptoPrice,
-} from "@/services/apiService";
+import { createTransaction, getTransactions } from "@/services/apiService";
+import { calculatePrice } from "@/utils/calculatePrice";
 
 export default {
   name: "BuyandSell",
@@ -109,6 +106,7 @@ export default {
         { value: "purchase", label: "Compra" },
         { value: "sale", label: "Venta" },
       ],
+      userCryptos: {},
     };
   },
   computed: {
@@ -126,6 +124,7 @@ export default {
   },
   created() {
     this.fetchTransactions();
+    this.fetchUserCryptos();
   },
   methods: {
     async handleTransaction() {
@@ -136,6 +135,10 @@ export default {
       }
       if (this.crypto_amount <= 0) {
         alert("La cantidad deben ser un numero mayor a 0");
+        return;
+      }
+      if (this.action === "sale" && !this.canSellCrypto()) {
+        alert("No tienes suficiente cantidad de esta criptomoneda para vender");
         return;
       }
       try {
@@ -150,6 +153,7 @@ export default {
 
         await createTransaction(transaction);
         this.fetchTransactions();
+        this.fetchUserCryptos(); // Actualiza las criptomonedas del usuario
         this.cleanForm();
         alert("Transacción registrada exitosamente");
       } catch (error) {
@@ -167,6 +171,31 @@ export default {
         this.loading = false;
       }
     },
+    //funcion para ver si dispone de criptos
+    async fetchUserCryptos() {
+      try {
+        //const userId = this.$store.getters.getUser;
+        const transactions = await getTransactions();
+        this.userCryptos = this.calculateUserCryptos(transactions);
+      } catch (error) {
+        console.error("Error obteniendo las criptomonedas del usuario:", error);
+      }
+    },
+    calculateUserCryptos(transactions) {
+      const userCryptos = {};
+      transactions.forEach((transaction) => {
+        const { crypto_code, crypto_amount, action } = transaction;
+        if (!userCryptos[crypto_code]) {
+          userCryptos[crypto_code] = 0;
+        }
+        if (action === "purchase") {
+          userCryptos[crypto_code] += crypto_amount;
+        } else if (action === "sale") {
+          userCryptos[crypto_code] -= crypto_amount;
+        }
+      });
+      return userCryptos;
+    },
     isMovementView() {
       return this.$router.push({ name: "movementHistory" });
     },
@@ -182,37 +211,28 @@ export default {
         .slice()
         .sort((a, b) => new Date(b.datetime) - new Date(a.datetime));
     },
-    async calculatePrice() {
-      if (this.crypto_code && this.crypto_amount && this.action) {
-        try {
-          const cryptoValue = await getCryptoPrice(
-            this.crypto_code,
-            this.action
-          );
-          const calculatedMoney = this.crypto_amount * cryptoValue;
-          // error de consola el valor calculado es un número válido
-          if (!isNaN(calculatedMoney)) {
-            this.money = calculatedMoney.toFixed(2);
-          } else {
-            this.money = "";
-          }
-        } catch (error) {
-          console.error("Error al calcular el precio:", error);
-        }
-      } else {
-        this.money = "";
-      }
+    //funcion de util/calculatePrice
+    async validateAndCalculatePrice() {
+      this.money = await calculatePrice(
+        this.crypto_code,
+        this.crypto_amount,
+        this.action
+      );
+    },
+    canSellCrypto() {
+      const userCryptoAmount = this.userCryptos[this.crypto_code] || 0;
+      return this.crypto_amount <= userCryptoAmount;
     },
   },
   watch: {
     action() {
-      this.calculatePrice();
+      this.validateAndCalculatePrice();
     },
     crypto_code() {
-      this.calculatePrice();
+      this.validateAndCalculatePrice();
     },
     crypto_amount() {
-      this.calculatePrice();
+      this.validateAndCalculatePrice();
     },
   },
 };
