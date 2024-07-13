@@ -7,6 +7,7 @@
     <router-link to="/movementHistory" class="nav-link"
       >Mis Movimientos</router-link
     >
+    <router-link to="/actualState" class="nav-link">Estado Actual</router-link>
     <router-link to="/login" class="nav-link">Cerrar Sesión</router-link>
   </nav>
   <h1 v-if="!isLoginView">{{ title.toUpperCase() }}</h1>
@@ -61,7 +62,7 @@ export default {
   border-radius: 15px;
 }
 .navigation {
-  background-color: #2d77c0;
+  background-color: #203682;
   padding: 0rem 1rem;
   display: flex;
   justify-content: center !important;
@@ -80,28 +81,35 @@ export default {
   transition: background-color 0.3s ease, color 0.3s ease;
   font-family: Arial, Helvetica, sans-serif;
   font-size: large;
+  margin-left: 2rem;
 }
 
 .nav-link:hover {
   color: #03090f;
+  font-weight: bold;
 }
 
 .nav-link:active {
   background-color: #1a25bc;
 }
+.router-link-active {
+  color: black;
+  font-weight: bold;
+  text-decoration: underline;
+}
 
-.nav-link:not(:last-child)::after {
+/* .nav-link:not(:last-child)::after {
   content: "--";
   color: #ecf0f1;
   margin-left: 2rem;
-  /*separacion*/
-}
+  
+} */
 .user-name {
   text-align: center;
   margin-left: 2rem;
   margin-top: 1rem;
   margin-right: auto;
   color: #ecf0f1;
-  font-weight: bold; /*resltando texto*/
+  font-weight: bold;
 }
 </style>

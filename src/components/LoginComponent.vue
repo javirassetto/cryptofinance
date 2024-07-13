@@ -140,7 +140,7 @@ span {
 button {
   padding: 0.7em;
   color: #fff;
-  background-color: #007bff;
+  background-color: #203682;
   border: none;
   border-radius: 5px;
   cursor: pointer;

@@ -21,7 +21,8 @@
           <option value="btc">Bitcoin (BTC)</option>
           <option value="eth">Ethereum (ETH)</option>
           <option value="usdt">Tether (USDT)</option>
-          <option value="dai">Dai</option>
+          <option value="sol">Solana (SOL)</option>
+          <option value="usdc">Usdc (USDC)</option>
         </select>
       </div>
       <div>
@@ -32,7 +33,7 @@
           min="0.000001"
           v-model.number="crypto_amount"
           placeholder="Ingrese la cantidad.."
-          @input="calculatePrice"
+          @input="validateAndCalculatePrice"
         />
       </div>
       <div>
@@ -55,7 +56,7 @@
     <div>
       <h3>Tu última Transacción</h3>
       <div v-if="loading">Cargando...</div>
-      <table v-if="transactions.length > 0">
+      <table v-if="transactions.length > 0 && !loading">
         <thead>
           <tr>
             <th>Criptomoneda</th>
@@ -270,7 +271,7 @@ export default {
   padding: 0.75rem;
   border: none;
   border-radius: 4px;
-  background-color: #007bff;
+  background-color: #203682;
   color: #fff;
   cursor: pointer;
 }

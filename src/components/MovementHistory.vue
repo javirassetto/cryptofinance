@@ -51,7 +51,8 @@
               <option value="btc">Bitcoin (BTC)</option>
               <option value="eth">Ethereum (ETH)</option>
               <option value="usdt">Tether (USDT)</option>
-              <option value="dai">Dai</option>
+              <option value="sol">Solana (SOL)</option>
+              <option value="usdc">Usdc (USDC)</option>
             </select>
           </div>
           <div>
@@ -283,7 +284,7 @@ button {
   margin-right: 8px;
   padding: 5px 10px;
   color: #fff;
-  background-color: #007bff;
+  background-color: #203682;
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -328,7 +329,7 @@ button:hover {
 }
 .modal-content button {
   color: #fff;
-  background-color: #007bff;
+  background-color: #203682;
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -339,7 +340,7 @@ button:hover {
 }
 
 .close {
-  color: #aaa;
+  color: #203682;
   float: right;
   font-size: 28px;
   font-weight: bold;
@@ -347,7 +348,7 @@ button:hover {
 
 .close:hover,
 .close:focus {
-  color: black;
+  color: #aaa;
   text-decoration: none;
   cursor: pointer;
 }

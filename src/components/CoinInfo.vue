@@ -51,7 +51,7 @@
       </tbody>
     </table>
     <!-- Vista pequeña -->
-    <div v-if="selectedCoin !== null && smallView" class="overlay">
+    <div v-if="selectedCoin !== null && smallView" class="smallView">
       <div class="selected-coin-view">
         <h3>Detalles de la criptomoneda</h3>
         <img :src="selectedCoin.image" class="selected-coin-image" />
@@ -108,7 +108,7 @@ export default {
       this.selectedCoin = null;
     },
     limitedCoinData() {
-      return this.coinData.slice(0, 10);
+      return this.coinData.slice(0, 15);
     },
   },
   watchEffect: {
@@ -167,7 +167,7 @@ tr.hover {
   position: relative;
 }
 /* estilos para la vista pequeña */
-.overlay {
+.smallView {
   position: fixed;
   top: 0;
   left: 0;
@@ -198,7 +198,7 @@ tr.hover {
 }
 
 .close-btn {
-  background-color: #007bff;
+  background-color: #203682;
   border-radius: 4px;
   color: #fff;
   border: none;
