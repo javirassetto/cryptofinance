@@ -35,7 +35,7 @@ export const getCryptoPrice = async (crypto, action) => {
     );
     return action === "purchase" ? response.data.ask : response.data.bid;
   } catch (error) {
-    console.error("Error when fetching crypto prices:", error);
+    console.error("Error cuando buscando el precios de las crypto:", error);
     throw error;
   }
 };
@@ -50,7 +50,7 @@ export const getCryptoData = async () => {
     );
     return response.data;
   } catch (error) {
-    console.error("Error trying to recover:", error);
+    console.error("Error intentando traer datos:", error);
     throw error;
   }
 };
@@ -61,7 +61,7 @@ export const createTransaction = async (transaction) => {
     const response = await apiClient.post("/transactions", transaction);
     return response.data;
   } catch (error) {
-    console.error("Error creating transaction:", error);
+    console.error("Error creando transaccion:", error);
     throw error;
   }
 };
@@ -75,7 +75,7 @@ export const getTransactions = async () => {
     );
     return response.data;
   } catch (error) {
-    console.error("Error fetching transactions:", error);
+    console.error("Error buscando transacciones:", error);
     throw error;
   }
 };
@@ -86,7 +86,7 @@ export const deleteTransactionById = async (transactionId) => {
     const response = await apiClient.delete(`/transactions/${transactionId}`);
     return response.data;
   } catch (error) {
-    console.error("Error deleting transaction:", error);
+    console.error("Error eliminando transacciones:", error);
     throw error;
   }
 };
@@ -100,7 +100,7 @@ export const updateTransaction = async (transactionId, transaction) => {
     );
     return response.data;
   } catch (error) {
-    console.error("Error updating transaction:", error);
+    console.error("Error actualizando transacciones:", error);
     throw error;
   }
 };
