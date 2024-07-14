@@ -21,11 +21,16 @@
       </table>
       <div v-if="totalMoney !== null">
         <h3>Total Dinero Actual</h3>
-        <p>${{ totalMoney.toFixed(2) }}</p>
+        <p class="money">${{ totalMoney.toFixed(2) }}</p>
       </div>
     </div>
-    <div v-else>
-      <p v-if="!loading">No hay transacciones para mostrar...</p>
+    <div v-else-if="!loading">
+      <strong><p>No tenes criptos disponibles...</p></strong>
+      <h3>Total Dinero Actual</h3>
+      <p class="money">${{ totalMoney.toFixed(2) }}</p>
+      <button type="button" class="button" @click="isBuyAndSellView()">
+        Comprar Criptos
+      </button>
     </div>
   </div>
 </template>
@@ -64,7 +69,7 @@ export default {
         ];
         console.log(CryptoCodes);
         const coins = [];
-
+        //recorro guardo en totalCripto valor unico con la funcion reduce descontando o sumando segun la accion
         for (const crypto_code of CryptoCodes) {
           const totalCryptoAmount = transactions.reduce(
             (accumulator, actual) => {
@@ -105,6 +110,7 @@ export default {
     },
     async calculateTotalMoney() {
       try {
+        //sumatoria del dinero total
         this.totalMoney = this.coinData.reduce(
           (accumulator, actual) => accumulator + actual.money,
           0
@@ -113,6 +119,9 @@ export default {
       } catch (error) {
         console.error("Error calculado el dinero total:", error);
       }
+    },
+    isBuyAndSellView() {
+      return this.$router.push({ name: "buyAndSell" });
     },
   },
 };
@@ -126,13 +135,10 @@ export default {
 
 .actual-state h2 {
   text-align: center;
-  color: #333;
 }
 .conteiner {
-  border: 1px solid #ccc;
+  border: 0.5px solid #ccc;
   border-radius: 5px;
-  background-color: #f0f4f8;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   margin: 2em auto;
   padding: 1em;
 }
@@ -147,14 +153,30 @@ table th,
 table td {
   padding: 0.5em;
   text-align: left;
-  border-bottom: 1px solid #ddd;
+  border: 1px solid #ddd;
 }
 
 table th {
   background-color: #f2f2f2;
 }
 
-table tr:nth-child(even) {
+tr:nth-child(even) {
   background-color: #f9f9f9;
+}
+.money {
+  font-weight: bold;
+}
+.button {
+  margin-right: auto;
+  margin-left: auto;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 4px;
+  background-color: #203682;
+  color: #fff;
+  cursor: pointer;
+}
+.button:hover {
+  background-color: #0056b3;
 }
 </style>
