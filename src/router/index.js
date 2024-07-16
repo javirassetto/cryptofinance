@@ -4,6 +4,7 @@ import LoginView from "@/views/LoginView.vue";
 import MovementHistoryView from "@/views/MovementHistoryView.vue";
 import BuyAndSell from "@/views/BuyAndSell.vue";
 import ActualStateView from "@/views/ActualStateView.vue";
+import InvestmentAnalysisView from "@/views/InvestmentAnalysisView.vue";
 
 const routes = [
   {
@@ -34,6 +35,11 @@ const routes = [
     path: "/actualState",
     name: "actualState",
     component: ActualStateView,
+  },
+  {
+    path: "/investmentAnalysis",
+    name: "investmentAnalysis",
+    component: InvestmentAnalysisView,
   },
 ];
 
