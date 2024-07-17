@@ -9,12 +9,14 @@
       <thead>
         <tr>
           <th>Criptomoneda</th>
+          <th>Disponibilidad</th>
           <th>Resultado</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="result in results" :key="result.crypto_code">
           <td>{{ result.crypto_code.toUpperCase() }}</td>
+          <td>{{ result.totalCryptoAmount }}</td>
           <td
             :class="{
               positive: result.Winnings > 0,
@@ -84,13 +86,18 @@ export default {
 
           try {
             //obtengo el precio actual y calculo ganancias
-            const cryptoPrice = await getCryptoPrice(cryptoCode, "purchase");
+            const cryptoPrice = await getCryptoPrice(
+              cryptoCode,
+              "purchase",
+              totalCryptoAmount
+            );
             const ActualTotalValue = totalCryptoAmount * cryptoPrice;
             const Winnings = ActualTotalValue - totalInvested;
 
             coins.push({
               crypto_code: cryptoCode,
               Winnings,
+              totalCryptoAmount,
             });
           } catch (error) {
             this.error = "Error al cargar los datos de tus inversiones";
