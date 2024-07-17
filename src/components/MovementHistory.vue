@@ -1,7 +1,10 @@
 <template>
   <div class="Movement-History">
     <div v-if="loading">Cargando...</div>
-    <table v-if="transactions.length > 0">
+    <div v-if="error">
+      <strong> {{ error }} </strong>
+    </div>
+    <table v-if="transactions.length > 0 && !error && !loading">
       <thead>
         <tr>
           <th>Criptomoneda</th>
@@ -28,8 +31,18 @@
         </tr>
       </tbody>
     </table>
-    <div v-else>
-      <p v-if="!loading">No hay transacciones para mostrar...</p>
+    <!--Div Print-->
+    <br />
+    <div v-if="transactions.length > 0 && !error && !loading">
+      <img
+        src="../assets/Print.jpg"
+        title="Imprimir Historial"
+        class="print"
+        @click="Print()"
+      />
+    </div>
+    <div v-else-if="!loading && !error">
+      <strong><p>No hay transacciones para mostrar...</p></strong>
     </div>
     <!-- Div Modal para editar transacción -->
     <div v-if="isEditing" class="modal">
@@ -133,6 +146,7 @@ export default {
       editingTransaction: null,
       isDelete: false,
       deleteTransactionId: null,
+      error: null,
     };
   },
   computed: {
@@ -166,6 +180,8 @@ export default {
         this.fetchTransactions();
         alert("Transacción registrada exitosamente");
       } catch (error) {
+        this.error = " Ha ocurrido un error en la operación";
+        this.isEditing = false;
         console.error("Error registrando la transacción:", error);
       }
     },
@@ -175,6 +191,7 @@ export default {
         this.transactions = await getTransactions();
         this.orderTransctions();
       } catch (error) {
+        this.error = "Error al cargar tu historial...";
         console.error("Error obteniendo transacciones:", error);
       } finally {
         this.loading = false;
@@ -214,6 +231,8 @@ export default {
         this.deleteTransactionId = null;
         alert("Transacción eliminada exitosamente");
       } catch (error) {
+        this.error = " Ha ocurrido un error en la operación";
+        this.isDelete = false;
         console.error("Error eliminando la transacción:", error);
       }
     },
@@ -228,6 +247,9 @@ export default {
         this.crypto_amount,
         this.action
       );
+    },
+    Print() {
+      window.print();
     },
   },
   watch: {
@@ -377,5 +399,16 @@ button:hover {
 }
 .edit-form button {
   margin-right: 10px;
+}
+.print {
+  margin-left: auto;
+  margin-right: auto;
+  height: 50px;
+  width: 50px;
+  cursor: pointer;
+}
+.print:hover {
+  height: 60px;
+  width: 60px;
 }
 </style>
