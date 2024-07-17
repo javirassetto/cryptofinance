@@ -2,7 +2,6 @@
   <div class="crypto-data">
     <div v-if="loading">Cargando...</div>
     <div v-if="error" class="error">{{ error }}</div>
-    <br />
     <h3>
       <b v-if="coinData.length" style="text-align: center">Criptomonedas</b>
     </h3>
@@ -15,7 +14,7 @@
           <th>Precio</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody class="tr-body">
         <tr
           v-for="(coin, index) in limitedCoinData()"
           :key="coin._id"
@@ -44,7 +43,7 @@
           </th>
           <th @click="selectCoin(index)">
             <span>
-              <b>${{ coin.current_price }}</b>
+              <b>USD {{ coin.current_price.toFixed(2) }}</b>
             </span>
           </th>
         </tr>
@@ -66,7 +65,7 @@
 </template>
 
 <script>
-import apiService from "../services/apiService";
+import { getCryptoData } from "@/services/apiService";
 
 export default {
   name: "CoinData",
@@ -88,7 +87,7 @@ export default {
       this.loading = true;
       this.error = null;
       try {
-        const data = await apiService.getCryptoData();
+        const data = await getCryptoData();
         this.coinData = data;
         if (data.length > 0) {
           this.selectedCoin = 0; // Establecer la primera opción como predeterminada
@@ -122,9 +121,9 @@ export default {
 <style scoped>
 /* Estilos para la tabla y las celdas de las monedas */
 .tr-title {
-  background-color: rgba(53, 51, 51, 0.651);
-  color: rgb(160, 138, 16);
-  font-weight: bold;
+  background-color: rgba(48, 46, 46, 0.651);
+  color: #203682;
+  font-size: larger;
 }
 .table {
   width: 95%;
@@ -139,7 +138,7 @@ export default {
 th,
 td {
   padding: 10px;
-  border: 1px solid #ddd;
+  border: 1px solid dimgrey;
   text-align: center;
   transition: transform 1.1s, background-color 0.3s;
 }
@@ -148,7 +147,6 @@ td {
   font-weight: bold;
   border: 1px solid #ddd;
 }
-
 tr.hover {
   transform: scale(1.1);
   color: rgb(49, 110, 25);

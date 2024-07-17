@@ -8,6 +8,9 @@
       >Mis Movimientos</router-link
     >
     <router-link to="/actualState" class="nav-link">Estado Actual</router-link>
+    <router-link to="/investmentAnalysis" class="nav-link"
+      >Inversiones</router-link
+    >
     <router-link to="/login" class="nav-link">Cerrar Sesión</router-link>
   </nav>
   <h1 v-if="!isLoginView">{{ title.toUpperCase() }}</h1>
@@ -32,9 +35,9 @@ export default {
     },
   },
   methods: {
-    logout() {
-      this.$store.dispatch("logout");
-    },
+    // logout() {
+    //   this.$store.dispatch("logout");
+    // },
   },
   //Ejemplo con otra Api
   /* async mounted() {
@@ -57,7 +60,8 @@ export default {
 }
 /* Icono style */
 .icono {
-  width: 3%;
+  width: 50px;
+  height: 50px;
   padding: 0.8%;
   border-radius: 15px;
 }
@@ -69,9 +73,7 @@ export default {
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(72, 9, 190, 0.1);
   font-family: Arial, Helvetica, sans-serif;
-  font-size: large;
 }
-
 .nav-link {
   color: #ecf0f1;
   text-decoration: none;
@@ -80,8 +82,8 @@ export default {
   border-radius: 4px;
   transition: background-color 0.3s ease, color 0.3s ease;
   font-family: Arial, Helvetica, sans-serif;
-  font-size: large;
   margin-left: 2rem;
+  font-weight: bold;
 }
 
 .nav-link:hover {
@@ -96,14 +98,8 @@ export default {
   color: black;
   font-weight: bold;
   text-decoration: underline;
+  font-size: larger;
 }
-
-/* .nav-link:not(:last-child)::after {
-  content: "--";
-  color: #ecf0f1;
-  margin-left: 2rem;
-  
-} */
 .user-name {
   text-align: center;
   margin-left: 2rem;
