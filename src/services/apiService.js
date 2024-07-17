@@ -25,13 +25,13 @@ const apiClient = axios.create({
   },
 });
 
-// Axios para la API de Buenbit
-const apiCriptoya = "https://criptoya.com/api/buenbit/";
-// Obtengo el precio de la api Buenbit
-export const getCryptoPrice = async (crypto, action) => {
+// Axios para la API de CriptoYa
+const apiCriptoya = "https://criptoya.com/api/satoshitango/";
+// Obtengo el precio de exchange satoshitango
+export const getCryptoPrice = async (crypto, action, amount) => {
   try {
     const response = await axios.get(
-      `${apiCriptoya}${crypto.toLowerCase()}/ars/0.1`
+      `${apiCriptoya}${crypto.toLowerCase()}/ars/${amount}`
     );
     return action === "purchase" ? response.data.ask : response.data.bid;
   } catch (error) {
