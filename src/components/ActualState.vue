@@ -1,6 +1,9 @@
 <template>
   <div class="actual-state">
     <div v-if="loading">Cargando...</div>
+    <div v-if="error">
+      <strong> {{ error }} </strong>
+    </div>
     <div v-if="coinData.length > 0" class="conteiner">
       <h3>Tus Criptomonedas</h3>
       <table>
@@ -24,7 +27,7 @@
         <p class="money">${{ totalMoney.toFixed(2) }}</p>
       </div>
     </div>
-    <div v-else-if="!loading">
+    <div v-else-if="!loading && !error">
       <strong><p>No tenes criptos disponibles...</p></strong>
       <h3>Total Dinero Actual</h3>
       <p class="money">${{ totalMoney.toFixed(2) }}</p>
@@ -45,6 +48,7 @@ export default {
       coinData: [],
       totalMoney: 0,
       loading: false,
+      error: null,
     };
   },
   created() {
@@ -69,7 +73,7 @@ export default {
         ];
         console.log(CryptoCodes);
         const coins = [];
-        //recorro guardo en totalCripto valor unico con la funcion reduce descontando o sumando segun la accion
+        //recorro y guardo en totalCripto valor unico con la funcion reduce descontando o sumando segun la accion
         for (const crypto_code of CryptoCodes) {
           const totalCryptoAmount = transactions.reduce(
             (accumulator, actual) => {
@@ -84,11 +88,15 @@ export default {
             },
             0
           );
-
-          if (totalCryptoAmount !== 0) {
+          console.log("cantidad " + totalCryptoAmount);
+          if (totalCryptoAmount > 0) {
             //obtengo el precio actual
             try {
-              const cryptoPrice = await getCryptoPrice(crypto_code, "purchase");
+              const cryptoPrice = await getCryptoPrice(
+                crypto_code,
+                "purchase",
+                totalCryptoAmount
+              );
               const moneyValue = totalCryptoAmount * cryptoPrice;
               coins.push({
                 crypto_code,
@@ -106,6 +114,9 @@ export default {
         console.log(this.coinData.length);
       } catch (error) {
         console.error("Error al calcular las criptomonedas:", error);
+        this.error = "Error al cargar los datos de tu estado actual ";
+      } finally {
+        this.loading = false;
       }
     },
     async calculateTotalMoney() {
@@ -115,6 +126,8 @@ export default {
           (accumulator, actual) => accumulator + actual.money,
           0
         );
+        //por si edita y queda 1 una venta --Ver
+        //if (this.totalMoney < 0) this.totalMoney = 0;
         console.log("total:" + this.totalMoney);
       } catch (error) {
         console.error("Error calculado el dinero total:", error);
