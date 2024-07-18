@@ -1,5 +1,6 @@
 <template>
   <div class="buy-and-sell">
+    <Alert v-if="showAlert" :message="alertMessage" @accept="handleAccept" />
     <form @submit.prevent="handleTransaction">
       <div>
         <label for="action">Tipo de Operación: </label>
@@ -53,6 +54,10 @@
       </div> -->
       <button type="submit">Registrar Transacción</button>
     </form>
+    <br />
+    <div v-if="error">
+      <strong> {{ error }} </strong>
+    </div>
     <div>
       <h3>Tu última Transacción</h3>
       <div v-if="loading">Cargando...</div>
@@ -91,9 +96,13 @@
 <script>
 import { createTransaction, getTransactions } from "@/services/apiService";
 import { calculatePrice } from "@/utils/calculatePrice";
+import Alert from "@/components/AlertComponent.vue";
 
 export default {
   name: "BuyandSell",
+  components: {
+    Alert,
+  },
   data() {
     return {
       crypto_code: "",
@@ -108,6 +117,9 @@ export default {
         { value: "sale", label: "Venta" },
       ],
       userCryptos: {},
+      error: null,
+      showAlert: false,
+      alertMessage: "",
     };
   },
   computed: {
@@ -128,18 +140,28 @@ export default {
     this.fetchUserCryptos();
   },
   methods: {
+    //metodo que reacciona ante el evento del componente hijo y reacciona
+    handleAccept() {
+      this.showAlert = false;
+    },
+    showAlertMessage(message) {
+      this.alertMessage = message;
+      this.showAlert = true;
+    },
     async handleTransaction() {
       const userId = this.$store.getters.getUser;
       if (!this.crypto_code || !this.crypto_amount) {
-        alert("Todos los campos son obligatorios");
+        this.showAlertMessage("Todos los campos son obligatorios.");
         return;
       }
       if (this.crypto_amount <= 0) {
-        alert("La cantidad deben ser un numero mayor a 0");
+        this.showAlertMessage("La cantidad deben ser un numero mayor a 0.");
         return;
       }
       if (this.action === "sale" && !this.canSellCrypto()) {
-        alert("No tienes suficiente cantidad de esta criptomoneda para vender");
+        this.showAlertMessage(
+          "No tienes suficiente cantidad de esta criptomoneda para realizar la venta."
+        );
         return;
       }
       try {
@@ -156,7 +178,7 @@ export default {
         this.fetchTransactions();
         this.fetchUserCryptos(); // Actualiza las criptomonedas del usuario
         this.cleanForm();
-        alert("Transacción registrada exitosamente");
+        this.showAlertMessage("Transacción registrada exitosamente.");
       } catch (error) {
         console.error("Error registrando la transacción:", error);
       }
@@ -167,6 +189,7 @@ export default {
         this.transactions = await getTransactions();
         this.orderTransctions();
       } catch (error) {
+        this.error = "Ha ocurrido un error al intentar operar..";
         console.error("Error obteniendo transacciones:", error);
       } finally {
         this.loading = false;

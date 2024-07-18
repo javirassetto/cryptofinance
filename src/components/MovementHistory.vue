@@ -1,5 +1,6 @@
 <template>
   <div class="Movement-History">
+    <Alert v-if="showAlert" :message="alertMessage" @accept="handleAccept" />
     <div v-if="loading">Cargando...</div>
     <div v-if="error">
       <strong> {{ error }} </strong>
@@ -130,9 +131,13 @@ import {
   updateTransaction,
 } from "@/services/apiService";
 import { calculatePrice } from "@/utils/calculatePrice";
+import Alert from "@/components/AlertComponent.vue";
 
 export default {
   name: "MovementHistory",
+  components: {
+    Alert,
+  },
   data() {
     return {
       crypto_code: "",
@@ -147,6 +152,8 @@ export default {
       isDelete: false,
       deleteTransactionId: null,
       error: null,
+      showAlert: false,
+      alertMessage: "",
     };
   },
   computed: {
@@ -160,6 +167,13 @@ export default {
     this.fetchTransactions();
   },
   methods: {
+    handleAccept() {
+      this.showAlert = false;
+    },
+    showAlertMessage(message) {
+      this.alertMessage = message;
+      this.showAlert = true;
+    },
     async handleTransaction() {
       const transaction = {
         user_id: this.$store.getters.getUser,
@@ -178,7 +192,7 @@ export default {
           await createTransaction(transaction);
         }
         this.fetchTransactions();
-        alert("Transacción registrada exitosamente");
+        this.showAlertMessage("Transacción registrada exitosamente");
       } catch (error) {
         this.error = " Ha ocurrido un error en la operación";
         this.isEditing = false;
@@ -229,7 +243,7 @@ export default {
         this.fetchTransactions();
         this.isDelete = false;
         this.deleteTransactionId = null;
-        alert("Transacción eliminada exitosamente");
+        this.showAlertMessage("Transacción eliminada exitosamente");
       } catch (error) {
         this.error = " Ha ocurrido un error en la operación";
         this.isDelete = false;
@@ -336,7 +350,7 @@ button:hover {
   padding: 20px;
   border: 1px solid #888;
   border-radius: 10px;
-  width: 70%;
+  width: 50%;
 }
 .modal-content label {
   margin-bottom: 0.5rem;
