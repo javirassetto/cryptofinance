@@ -56,7 +56,7 @@
         <img :src="selectedCoin.image" class="selected-coin-image" />
         <p><b>Nombre:</b> {{ selectedCoin.name }}</p>
         <p><b>Símbolo:</b> {{ selectedCoin.symbol.toUpperCase() }}</p>
-        <p><b>Precio actual:</b> ${{ selectedCoin.current_price }}</p>
+        <p><b>Precio actual:</b> US$ {{ selectedCoin.current_price }}</p>
         <p><b>Ranking de mercado:</b> {{ selectedCoin.market_cap_rank }}°</p>
         <button class="close-btn" @click="closeSelectedCoin">Cerrar</button>
       </div>
@@ -119,6 +119,9 @@ export default {
 </script>
 
 <style scoped>
+.error {
+  font-weight: bold;
+}
 /* Estilos para la tabla y las celdas de las monedas */
 .tr-title {
   background-color: rgba(48, 46, 46, 0.651);
@@ -187,7 +190,10 @@ tr.hover {
   position: relative;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-
+.selected-coin-view p {
+  margin-left: 60px;
+  text-align: left;
+}
 .selected-coin-image {
   max-width: 100px;
   margin-bottom: 10px;
