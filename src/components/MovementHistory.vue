@@ -26,6 +26,7 @@
           </td>
           <td>{{ transaction.datetime }}</td>
           <td>
+            <button @click="DetailTransaction(transaction)">Detalle</button>
             <button @click="editTransaction(transaction)">Editar</button>
             <button @click="confirmDelete(transaction._id)">Eliminar</button>
           </td>
@@ -44,6 +45,31 @@
     </div>
     <div v-else-if="!loading && !error">
       <strong><p>No hay transacciones para mostrar...</p></strong>
+    </div>
+    <!-- Div Modal para ver detalle de la transaccion -->
+    <div v-if="isDetail" class="modal">
+      <div class="modal-content">
+        <span class="close" @click="cancelDetail">&times;</span>
+        <h3>Detalle de Transacción</h3>
+        <div class="detailView">
+          <p>
+            <strong>Acción:</strong>
+            {{ detailTransaction.action === "purchase" ? "Compra" : "Venta" }}
+          </p>
+          <p>
+            <strong>Criptomoneda:</strong>
+            {{ detailTransaction.crypto_code.toUpperCase() }}
+          </p>
+          <p>
+            <strong>Cantidad:</strong> {{ detailTransaction.crypto_amount }}
+          </p>
+          <p><strong>Dinero:</strong> $ {{ detailTransaction.money }}</p>
+          <p><strong>Fecha y Hora:</strong> {{ detailTransaction.datetime }}</p>
+        </div>
+        <div>
+          <button @click="cancelDetail">Cerrar</button>
+        </div>
+      </div>
     </div>
     <!-- Div Modal para editar transacción -->
     <div v-if="isEditing" class="modal">
@@ -147,6 +173,8 @@ export default {
       datetime: "",
       transactions: [],
       loading: false,
+      isDetail: false,
+      detailTransaction: null,
       isEditing: false,
       editingTransaction: null,
       isDelete: false,
@@ -210,6 +238,14 @@ export default {
       } finally {
         this.loading = false;
       }
+    },
+    DetailTransaction(transaction) {
+      this.isDetail = true;
+      this.detailTransaction = transaction;
+    },
+    cancelDetail() {
+      this.isDetail = false;
+      this.detailTransaction = null;
     },
     editTransaction(transaction) {
       this.isEditing = true;
@@ -388,7 +424,10 @@ button:hover {
   text-decoration: none;
   cursor: pointer;
 }
-
+.detailView p {
+  margin-left: 15em;
+  text-align: left;
+}
 /* Estilos para el formulario de edición */
 .edit-form h3 {
   margin-bottom: 10px;
