@@ -37,7 +37,7 @@
     <br />
     <div v-if="transactions.length > 0 && !error && !loading">
       <img
-        src="../assets/Print.jpg"
+        :src="imagePrint"
         title="Imprimir Historial"
         class="print"
         @click="Print()"
@@ -158,6 +158,7 @@ import {
 } from "@/services/apiService";
 import { calculatePrice } from "@/utils/calculatePrice";
 import Alert from "@/components/AlertComponent.vue";
+import ImagePrint from "../assets/Print.jpg";
 
 export default {
   name: "MovementHistory",
@@ -182,6 +183,7 @@ export default {
       error: null,
       showAlert: false,
       alertMessage: "",
+      imagePrint: ImagePrint,
     };
   },
   computed: {
