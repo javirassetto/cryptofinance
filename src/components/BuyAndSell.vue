@@ -3,6 +3,16 @@
     <Alert v-if="showAlert" :message="alertMessage" @accept="handleAccept" />
     <form @submit.prevent="handleTransaction">
       <div>
+        <label for="exchange">Seleccione un Exchange: </label>
+        <select v-model.trim="selectedExchange" required>
+          <option disabled selected value="">Seleccione una exchange</option>
+          <option value="satoshitango">SatoshiTango</option>
+          <option value="buenbit">Buenbit</option>
+          <option value="binance">Binance</option>
+          <option value="cryptomkt">CryptoMarket</option>
+        </select>
+      </div>
+      <div>
         <label for="action">Tipo de Operación: </label>
         <select v-model.trim="action" required>
           <option disabled selected value="">Seleccione una operación</option>
@@ -120,6 +130,7 @@ export default {
       error: null,
       showAlert: false,
       alertMessage: "",
+      selectedExchange: "satoshitango",
     };
   },
   computed: {
@@ -240,7 +251,8 @@ export default {
       this.money = await calculatePrice(
         this.crypto_code,
         this.crypto_amount,
-        this.action
+        this.action,
+        this.selectedExchange
       );
     },
     canSellCrypto() {
@@ -256,6 +268,9 @@ export default {
       this.validateAndCalculatePrice();
     },
     crypto_amount() {
+      this.validateAndCalculatePrice();
+    },
+    selectedExchange() {
       this.validateAndCalculatePrice();
     },
   },
