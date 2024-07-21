@@ -1,24 +1,13 @@
-# cryptofinance
+**# CryptoFinance**
 
-## Project setup
-```
-npm install
-```
+Descripción
+CryptoFinance es un proyecto desarrollado como trabajo final para la materia Laboratorio de Computación III. Es una billetera virtual de criptomonedas que permite a los usuarios gestionar sus inversiones en diferentes criptomonedas. La aplicación está construida utilizando Vue.js en su versión 3.
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+Funcionalidades
+•	Inicio: Vista general de las criptomonedas disponibles.
+•	Nueva Operación: Permite realizar operaciones de compra y venta de criptomonedas.
+•	Mis Movimientos: Historial de todas las transacciones realizadas.
+•	Estado Actual: Estado actual de las inversiones y criptoactivos.
+•	Inversiones: Análisis de las inversiones, mostrando ganancias y pérdidas.
 
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+![alt text](logo_crypto.jpeg)
