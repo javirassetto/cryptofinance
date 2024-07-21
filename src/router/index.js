@@ -10,6 +10,7 @@ const routes = [
   {
     path: "/",
     redirect: "/login",
+    component: LoginView,
   },
   {
     path: "/login",
