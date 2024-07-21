@@ -2,14 +2,14 @@ import axios from "axios";
 import store from "@/store";
 
 // URL base para la API de almacenamiento de datos
-//const URL_base = "https://laboratorio-36cf.restdb.io/rest/";
+const URL_base = "https://laboratorio3-f36a.restdb.io/rest";
 
 // Clave API para la API de almacenamiento de datos
-//const apiKey = "64a5ccf686d8c5d256ed8fce";
+const apiKey = "60eb09146661365596af552f";
 
 // URL 2° por si falla
-const URL_base = "https://laboratorio3-5459.restdb.io/rest/";
-const apiKey = "64a57c2b86d8c50fe6ed8fa5";
+//const URL_base = "https://laboratorio3-5459.restdb.io/rest/";
+//const apiKey = "64a57c2b86d8c50fe6ed8fa5";
 
 // URL 3° por si falla
 //const URL_base = "https://laboratorio3-5fc7.restdb.io/rest/";
@@ -51,8 +51,10 @@ export const getCryptoPrice = async (
 export const getCryptoData = async () => {
   try {
     const response = await axios.get(
-      "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false"
+      "https://api.coingecko.com/api/v3/coins/markets?vs_currency=ars&order=market_cap_desc&per_page=100&page=1&sparkline=false"
     );
+    // const res = await response.data;
+    // console.log(res);
     return response.data;
   } catch (error) {
     console.error("Error intentando traer datos:", error);
