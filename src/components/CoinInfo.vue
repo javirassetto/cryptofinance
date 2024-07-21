@@ -5,7 +5,15 @@
     <h3>
       <b v-if="coinData.length" style="text-align: center">Criptomonedas</b>
     </h3>
-    <table v-if="coinData.length" class="table">
+    <input
+      v-if="coinData.length"
+      type="search"
+      placeholder="🔍 Buscar..."
+      class="search-input"
+      @keyup="SearchCoins()"
+      v-model="textSearch"
+    />
+    <table v-if="filteredCoin.length" class="table">
       <thead>
         <tr class="tr-title">
           <th>Ranking</th>
@@ -16,8 +24,8 @@
       </thead>
       <tbody class="tr-body">
         <tr
-          v-for="(coin, index) in limitedCoinData()"
-          :key="coin._id"
+          v-for="(coin, index) in filteredCoin"
+          :key="coin.id"
           @mouseover="hover = index"
           @mouseleave="hover = null"
           :class="{ hover: hover === index }"
@@ -28,12 +36,12 @@
 
           <th
             v-if="coinData.length"
-            @click="selectCoin(index)"
+            @click="SelectCoin(index)"
             class="coin-cell"
           >
             <img :src="coin.image" class="coin-image" /><br />
           </th>
-          <th @click="selectCoin(index)">
+          <th @click="SelectCoin(index)">
             <span>
               <b>{{ coin.name }}</b>
             </span>
@@ -41,14 +49,18 @@
               {{ coin.symbol.toUpperCase() }}
             </span>
           </th>
-          <th @click="selectCoin(index)">
+          <th @click="SelectCoin(index)" style="padding-right: 30px">
             <span>
-              <b>USD {{ coin.current_price.toFixed(2) }}</b>
+              <b> ${{ coin.current_price.toLocaleString() }}</b>
             </span>
           </th>
         </tr>
       </tbody>
     </table>
+    <div v-else-if="!error" class="no-results">
+      <p>No se encontraron criptomonedas.</p>
+    </div>
+
     <!-- Vista pequeña -->
     <div v-if="selectedCoin !== null && smallView" class="smallView">
       <div class="selected-coin-view">
@@ -56,7 +68,10 @@
         <img :src="selectedCoin.image" class="selected-coin-image" />
         <p><b>Nombre:</b> {{ selectedCoin.name }}</p>
         <p><b>Símbolo:</b> {{ selectedCoin.symbol.toUpperCase() }}</p>
-        <p><b>Precio actual:</b> US$ {{ selectedCoin.current_price }}</p>
+        <p>
+          <b>Precio actual:</b>
+          ${{ selectedCoin.current_price.toLocaleString() }}
+        </p>
         <p><b>Ranking de mercado:</b> {{ selectedCoin.market_cap_rank }}°</p>
         <button class="close-btn" @click="closeSelectedCoin">Cerrar</button>
       </div>
@@ -77,6 +92,8 @@ export default {
       selectedCoin: null,
       hover: null,
       smallView: false,
+      textSearch: "",
+      filteredCoin: [],
     };
   },
   created() {
@@ -89,9 +106,7 @@ export default {
       try {
         const data = await getCryptoData();
         this.coinData = data;
-        if (data.length > 0) {
-          this.selectedCoin = 0; // Establecer la primera opción como predeterminada
-        }
+        this.filteredCoin = data;
       } catch (error) {
         this.error =
           "Hubo un problema al cargar los datos de las criptomonedas.";
@@ -99,28 +114,50 @@ export default {
         this.loading = false;
       }
     },
-    selectCoin(index) {
+    SelectCoin(index) {
       this.selectedCoin = this.coinData[index];
       this.smallView = true;
     },
     closeSelectedCoin() {
       this.selectedCoin = null;
     },
-    limitedCoinData() {
-      return this.coinData.slice(0, 15);
+    // limitedCoinData() {
+    //   return this.coinData.slice(0, 15);
+    // },
+    async SearchCoins() {
+      //console.log(this.textSearch);
+      this.filteredCoin = await this.coinData.filter(
+        (coin) =>
+          coin.name.toLowerCase().includes(this.textSearch.toLowerCase()) ||
+          coin.symbol.toLowerCase().includes(this.textSearch.toLowerCase())
+      );
     },
   },
-  watchEffect: {
-    rechargeMe() {
-      this.fetchCryptoData();
+  watch: {
+    textSearch() {
+      this.SearchCoins();
     },
   },
 };
 </script>
 
 <style scoped>
+.crypto-data {
+  text-align: center;
+  position: relative;
+}
 .error {
   font-weight: bold;
+}
+.search-input {
+  width: 95%;
+  padding: 5px;
+  margin-bottom: 3px;
+  color: #203682;
+  cursor: pointer;
+  border: 1px solid dimgrey;
+  font-size: 16px;
+  background-color: black;
 }
 /* Estilos para la tabla y las celdas de las monedas */
 .tr-title {
@@ -164,8 +201,10 @@ tr.hover {
   margin: 1px;
   padding: 0px;
 }
-.crypto-data {
-  position: relative;
+.no-results {
+  margin-top: 20px;
+  font-size: 18px;
+  font-weight: bold;
 }
 /* estilos para la vista pequeña */
 .smallView {
