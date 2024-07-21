@@ -31,12 +31,11 @@ const apiCriptoya = "https://criptoya.com/api/";
 export const getCryptoPrice = async (
   crypto,
   action,
-  amount,
   exchange = "satoshitango"
 ) => {
   try {
     const response = await axios.get(
-      `${apiCriptoya}${exchange}/${crypto.toLowerCase()}/ars/${amount}`
+      `${apiCriptoya}${exchange}/${crypto.toLowerCase()}/ars/0.1`
     );
     return action === "purchase" ? response.data.ask : response.data.bid;
   } catch (error) {

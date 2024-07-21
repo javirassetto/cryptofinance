@@ -3,7 +3,7 @@
     <Alert v-if="showAlert" :message="alertMessage" @accept="handleAccept" />
     <form @submit.prevent="handleTransaction">
       <div>
-        <label for="exchange">Seleccione un Exchange:</label>
+        <label for="exchange">Seleccione un Exchange: </label>
         <select v-model.trim="selectedExchange" required>
           <option disabled selected value="">Seleccione una exchange</option>
           <option value="satoshitango">SatoshiTango</option>
@@ -130,7 +130,7 @@ export default {
       error: null,
       showAlert: false,
       alertMessage: "",
-      selectedExchange: "satoshitango",
+      selectedExchange: "",
     };
   },
   computed: {
@@ -250,8 +250,8 @@ export default {
     async validateAndCalculatePrice() {
       this.money = await calculatePrice(
         this.crypto_code,
-        this.crypto_amount,
         this.action,
+        this.crypto_amount,
         this.selectedExchange
       );
     },

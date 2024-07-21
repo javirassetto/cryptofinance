@@ -86,11 +86,7 @@ export default {
 
           try {
             //obtengo el precio actual y calculo ganancias
-            const cryptoPrice = await getCryptoPrice(
-              cryptoCode,
-              "purchase",
-              totalCryptoAmount
-            );
+            const cryptoPrice = await getCryptoPrice(cryptoCode, "purchase");
             const ActualTotalValue = totalCryptoAmount * cryptoPrice;
             const Winnings = ActualTotalValue - totalInvested;
 

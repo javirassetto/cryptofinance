@@ -2,18 +2,13 @@ import { getCryptoPrice } from "@/services/apiService";
 
 export async function calculatePrice(
   crypto_code,
-  crypto_amount,
   action,
+  crypto_amount,
   exchange
 ) {
   if (crypto_code && crypto_amount && action) {
     try {
-      const cryptoValue = await getCryptoPrice(
-        crypto_code,
-        action,
-        crypto_amount,
-        exchange
-      );
+      const cryptoValue = await getCryptoPrice(crypto_code, action, exchange);
       const calculatedMoney = crypto_amount * cryptoValue;
       // error de consola el valor calculado es un número válido
       if (!isNaN(calculatedMoney)) {

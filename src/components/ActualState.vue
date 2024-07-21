@@ -92,11 +92,7 @@ export default {
           if (totalCryptoAmount > 0) {
             //obtengo el precio actual
             try {
-              const cryptoPrice = await getCryptoPrice(
-                crypto_code,
-                "purchase",
-                totalCryptoAmount
-              );
+              const cryptoPrice = await getCryptoPrice(crypto_code, "purchase");
               const moneyValue = totalCryptoAmount * cryptoPrice;
               coins.push({
                 crypto_code,
