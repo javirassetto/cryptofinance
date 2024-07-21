@@ -235,6 +235,7 @@ export default {
       return this.$router.push({ name: "movementHistory" });
     },
     cleanForm() {
+      this.selectedExchange = "";
       this.crypto_code = "";
       this.crypto_amount = "";
       this.money = "";
