@@ -97,7 +97,7 @@ export default {
   max-width: 400px;
   margin: 2em auto;
   padding: 2em;
-  border: 3px solid #ccc;
+  border: 3px solid #203682;
   border-radius: 10px;
   background-color: #f0f4f8;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -105,7 +105,7 @@ export default {
 
 .login h2 {
   text-align: center;
-  color: #333;
+  color: #0d183f;
   margin-bottom: 1.5em;
 }
 
@@ -115,12 +115,12 @@ div {
 
 label {
   margin-bottom: 0.5em;
-  color: #555;
+  color: #0d183f;
   display: block;
 }
 
 input {
-  border: 1px solid #ccc;
+  border: 2px solid #ccc;
   padding: 0.5em;
   font-size: 1em;
   width: calc(100% - 1em);
@@ -128,7 +128,7 @@ input {
 }
 
 input:focus {
-  border-color: #007bff;
+  border-color: #203682;
   outline: none;
 }
 

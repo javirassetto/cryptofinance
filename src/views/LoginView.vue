@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <header class="header-view">
-      <img alt="headerCrypto" src="../assets/crypto_finance_header.png" />
+      <img alt="headerCrypto" src="../assets/logo_crypto.jpeg" />
     </header>
     <div class="login-view">
       <Login />
@@ -26,6 +26,8 @@ export default {
   display: flex;
   flex-direction: column;
   height: 100vh;
+  /*background-image: url(../assets/banner-5223280_1280.jpg);*/
+  background: #020718;
 }
 
 /* Encabezado */
@@ -36,7 +38,7 @@ export default {
   width: 100%;
   max-height: 285px;
   object-fit: cover;
-  border-bottom: 3px solid rgb(192, 150, 95);
+  border-bottom: 4px solid rgb(192, 150, 95);
 }
 
 /* Vista de inicio de sesión */
@@ -46,7 +48,7 @@ export default {
   align-items: center;
   flex-grow: 1;
   padding: 20px;
-  background: #f8f9fa;
+  background: #020718;
 }
 
 .login {
@@ -97,7 +99,7 @@ export default {
 .login button {
   padding: 0.75em;
   color: #fff;
-  background-color: #007bff;
+  background-color: #203682;
   border: none;
   border-radius: 5px;
   cursor: pointer;
