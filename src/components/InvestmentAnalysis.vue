@@ -2,7 +2,7 @@
   <div>
     <h2>Análisis de tus Inversiones</h2>
     <div v-if="loading">Cargando...</div>
-    <div v-if="error">
+    <div v-if="error" class="error">
       <strong> {{ error }} </strong>
     </div>
     <table v-if="results.length > 0" class="table">
@@ -96,14 +96,14 @@ export default {
               totalCryptoAmount,
             });
           } catch (error) {
-            this.error = "Error al cargar los datos de tus inversiones";
+            this.error = "Error al cargar los datos de tus inversiones.";
             console.error("Error al calcular el precio:", error);
           }
         }
 
         this.results = coins;
       } catch (error) {
-        this.error = "Error al cargar los datos de tus inversiones";
+        this.error = "Error al cargar los datos de tus inversiones.";
         console.error("Error al calcular las criptomonedas:", error);
       } finally {
         this.loading = false;
@@ -138,5 +138,8 @@ th {
 }
 .negative {
   color: rgb(158, 9, 9);
+}
+.error {
+  color: red;
 }
 </style>

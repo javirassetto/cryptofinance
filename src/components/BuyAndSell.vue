@@ -3,9 +3,9 @@
     <Alert v-if="showAlert" :message="alertMessage" @accept="handleAccept" />
     <form @submit.prevent="handleTransaction">
       <div>
-        <label for="exchange">Seleccione un Exchange: </label>
+        <label for="exchange">Tipo de Exchange: </label>
         <select v-model.trim="selectedExchange" required>
-          <option disabled selected value="">Seleccione una exchange</option>
+          <option disabled selected value="">Seleccione un exchange</option>
           <option value="satoshitango">SatoshiTango</option>
           <option value="buenbit">Buenbit</option>
           <option value="binance">Binance</option>
@@ -65,7 +65,7 @@
       <button type="submit">Registrar Transacción</button>
     </form>
     <br />
-    <div v-if="error">
+    <div v-if="error" class="error">
       <strong> {{ error }} </strong>
     </div>
     <div>
@@ -344,5 +344,8 @@ tr:nth-child(even) {
 
 tr:hover {
   background-color: #ddd;
+}
+.error {
+  color: red;
 }
 </style>

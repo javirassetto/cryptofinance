@@ -2,7 +2,7 @@
   <div class="Movement-History">
     <Alert v-if="showAlert" :message="alertMessage" @accept="handleAccept" />
     <div v-if="loading">Cargando...</div>
-    <div v-if="error">
+    <div v-if="error" class="error">
       <strong> {{ error }} </strong>
     </div>
     <table v-if="transactions.length > 0 && !error && !loading">
@@ -224,7 +224,7 @@ export default {
         this.fetchTransactions();
         this.showAlertMessage("Transacción registrada exitosamente");
       } catch (error) {
-        this.error = " Ha ocurrido un error en la operación";
+        this.error = " Ha ocurrido un error en la operación.";
         this.isEditing = false;
         console.error("Error registrando la transacción:", error);
       }
@@ -465,5 +465,8 @@ button:hover {
 .print:hover {
   height: 60px;
   width: 60px;
+}
+.error {
+  color: red;
 }
 </style>

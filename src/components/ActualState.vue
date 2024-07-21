@@ -1,7 +1,7 @@
 <template>
   <div class="actual-state">
     <div v-if="loading">Cargando...</div>
-    <div v-if="error">
+    <div v-if="error" class="error">
       <strong> {{ error }} </strong>
     </div>
     <div v-if="coinData.length > 0" class="conteiner">
@@ -187,5 +187,8 @@ tr:nth-child(even) {
 }
 .button:hover {
   background-color: #0056b3;
+}
+.error {
+  color: red;
 }
 </style>
