@@ -3,7 +3,7 @@
     <Alert v-if="showAlert" :message="alertMessage" @accept="handleAccept" />
     <form @submit.prevent="handleTransaction">
       <div>
-        <label for="exchange">Seleccione un Exchange: </label>
+        <label for="exchange">Seleccione un Exchange:</label>
         <select v-model.trim="selectedExchange" required>
           <option disabled selected value="">Seleccione una exchange</option>
           <option value="satoshitango">SatoshiTango</option>
