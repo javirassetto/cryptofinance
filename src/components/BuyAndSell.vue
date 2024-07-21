@@ -1,5 +1,8 @@
 <template>
-  <div class="buy-and-sell">
+  <div v-if="error" class="error">
+    <strong> {{ error }} </strong>
+  </div>
+  <div class="buy-and-sell" v-if="!error">
     <Alert v-if="showAlert" :message="alertMessage" @accept="handleAccept" />
     <form @submit.prevent="handleTransaction">
       <div>
@@ -65,10 +68,7 @@
       <button type="submit">Registrar Transacción</button>
     </form>
     <br />
-    <div v-if="error" class="error">
-      <strong> {{ error }} </strong>
-    </div>
-    <div>
+    <div v-if="!error">
       <h3>Tu última Transacción</h3>
       <div v-if="loading">Cargando...</div>
       <table v-if="transactions.length > 0 && !loading">
