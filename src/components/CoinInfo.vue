@@ -148,6 +148,7 @@ export default {
 }
 .error {
   font-weight: bold;
+  color: red;
 }
 .search-input {
   width: 95%;
