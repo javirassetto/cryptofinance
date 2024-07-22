@@ -77,14 +77,24 @@
         <span class="close" @click="cancelEdit">&times;</span>
         <h3>Editar Transacción</h3>
         <form @submit.prevent="handleTransaction">
-          <div>
+          <div class="editView">
+            <label for="exchange">Tipo de Exchange: </label>
+            <select v-model.trim="selectedExchange" required>
+              <option disabled selected value="">Seleccione un exchange</option>
+              <option value="satoshitango">SatoshiTango</option>
+              <option value="buenbit">Buenbit</option>
+              <option value="binance">Binance</option>
+              <option value="cryptomkt">CryptoMarket</option>
+            </select>
+          </div>
+          <div class="editView">
             <label for="action">Acción: </label>
             <select v-model.trim="action" id="action" required>
               <option value="purchase">Compra</option>
               <option value="sale">Venta</option>
             </select>
           </div>
-          <div>
+          <div class="editView">
             <label for="crypto_code">Criptomoneda: </label>
             <select v-model.trim="crypto_code" id="crypto_code" required>
               <option disabled selected value="">Seleccione una crypto</option>
@@ -95,7 +105,7 @@
               <option value="usdc">Usdc (USDC)</option>
             </select>
           </div>
-          <div>
+          <div class="editView">
             <label for="crypto_amount">Cantidad: </label>
             <input
               v-model.number="crypto_amount"
@@ -107,7 +117,7 @@
               required
             />
           </div>
-          <div>
+          <div class="editView">
             <label for="money">Monto en ARS: </label>
             <input
               v-model="money"
@@ -184,6 +194,7 @@ export default {
       showAlert: false,
       alertMessage: "",
       imagePrint: ImagePrint,
+      selectedExchange: "",
     };
   },
   computed: {
@@ -249,7 +260,7 @@ export default {
       this.isDetail = false;
       this.detailTransaction = null;
     },
-    editTransaction(transaction) {
+    async editTransaction(transaction) {
       this.isEditing = true;
       this.editingTransaction = transaction;
       this.crypto_code = transaction.crypto_code;
@@ -257,6 +268,7 @@ export default {
       this.money = transaction.money;
       this.action = transaction.action;
       this.datetime = transaction.datetime;
+      await this.validateAndCalculatePrice();
     },
     cancelEdit() {
       this.isEditing = false;
@@ -266,6 +278,7 @@ export default {
       this.money = "";
       this.action = "";
       this.datetime = "";
+      this.selectedExchange = "";
     },
     confirmDelete(transactionId) {
       this.isDelete = true;
@@ -296,8 +309,9 @@ export default {
     async validateAndCalculatePrice() {
       this.money = await calculatePrice(
         this.crypto_code,
+        this.action,
         this.crypto_amount,
-        this.action
+        this.selectedExchange
       );
     },
     Print() {
@@ -312,6 +326,9 @@ export default {
       this.validateAndCalculatePrice();
     },
     crypto_amount() {
+      this.validateAndCalculatePrice();
+    },
+    selectedExchange() {
       this.validateAndCalculatePrice();
     },
   },
@@ -388,7 +405,7 @@ button:hover {
   padding: 20px;
   border: 1px solid #888;
   border-radius: 10px;
-  width: 50%;
+  width: 68%;
 }
 .modal-content label {
   margin-bottom: 0.5rem;
@@ -427,10 +444,16 @@ button:hover {
   cursor: pointer;
 }
 .detailView p {
-  margin-left: 15em;
+  width: 80%;
+  margin-left: 15%;
   text-align: left;
 }
 /* Estilos para el formulario de edición */
+.editView {
+  width: 90%;
+  padding-left: 12%;
+  text-align: left;
+}
 .edit-form h3 {
   margin-bottom: 10px;
 }
@@ -442,6 +465,7 @@ button:hover {
 .edit-form label {
   display: block;
   margin-bottom: 5px;
+  text-align: left;
 }
 
 .edit-form input,
