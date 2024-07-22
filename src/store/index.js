@@ -20,10 +20,10 @@ export default createStore({
       commit("setUser", user);
     },
     /*limpio la información del usuario */
-    logout({ commit }) {
-      commit("setUser", null);
-      localStorage.removeItem("user");
-    },
+    // logout({ commit }) {
+    //   commit("setUser", null);
+    //   localStorage.removeItem("user");
+    // },
   },
   //para poder acceder a state
   getters: {
