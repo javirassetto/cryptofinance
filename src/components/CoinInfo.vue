@@ -115,7 +115,7 @@ export default {
       }
     },
     SelectCoin(index) {
-      this.selectedCoin = this.coinData[index];
+      this.selectedCoin = this.filteredCoin[index];
       this.smallView = true;
     },
     closeSelectedCoin() {
