@@ -17,7 +17,9 @@
         <router-link to="/investmentAnalysis" class="nav-link"
           >Inversiones</router-link
         >
-        <router-link to="/login" class="nav-link">Cerrar Sesión</router-link>
+        <router-link to="/login" class="nav-link" @click="logout()"
+          >Cerrar Sesión</router-link
+        >
       </div>
     </nav>
   </div>
@@ -35,6 +37,11 @@ export default {
     username() {
       // retorno el nombre del usuario.
       return this.$store.getters.getUser;
+    },
+  },
+  methods: {
+    logout() {
+      this.$store.dispatch("logout");
     },
   },
 };
