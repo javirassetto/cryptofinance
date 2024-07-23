@@ -30,6 +30,7 @@ export default createStore({
     getUser(state) {
       return state.user;
     },
+    isAuthenticated: (state) => !!state.user,
   },
   modules: {},
 });

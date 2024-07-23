@@ -5,7 +5,7 @@ import MovementHistoryView from "@/views/MovementHistoryView.vue";
 import BuyAndSell from "@/views/BuyAndSell.vue";
 import ActualStateView from "@/views/ActualStateView.vue";
 import InvestmentAnalysisView from "@/views/InvestmentAnalysisView.vue";
-
+import store from "@/store";
 const routes = [
   {
     path: "/",
@@ -47,6 +47,17 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
+});
+//navegación global
+router.beforeEach((to, from, next) => {
+  const publicPages = ["/login"];
+  const authRequired = !publicPages.includes(to.path);
+  const isAuthenticated = store.getters.isAuthenticated;
+
+  if (authRequired && !isAuthenticated) {
+    return next("/login");
+  }
+  next();
 });
 
 export default router;
