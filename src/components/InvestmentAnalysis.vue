@@ -41,10 +41,10 @@ export default {
   name: "InvestmentAnalysis",
   data() {
     return {
-      transactions: [],
       results: [],
       loading: false,
       error: null,
+      coins: [],
     };
   },
   created() {
@@ -59,13 +59,12 @@ export default {
         const transactions = await getTransactions();
         //console.log(transactions);
 
-        //guardo por codigo de cripto mapeando en transactions y uso Set para eliminar duplicados
+        //guardo por codigo unico de cripto mapeando en transactions y uso Set para eliminar duplicados
         const CryptoCodes = [
           ...new Set(transactions.map((type) => type.crypto_code)),
         ];
-        const coins = [];
 
-        //verifico usando filter los cryptoCode
+        //verifico usando filter los cryptoCode en las transacciones
         for (const cryptoCode of CryptoCodes) {
           const cryptoTransactions = transactions.filter(
             (type) => type.crypto_code === cryptoCode
@@ -90,21 +89,21 @@ export default {
             const ActualTotalValue = totalCryptoAmount * cryptoPrice;
             const Winnings = ActualTotalValue - totalInvested;
 
-            coins.push({
+            this.coins.push({
               crypto_code: cryptoCode,
               Winnings,
               totalCryptoAmount,
             });
           } catch (error) {
-            this.error = "Error al cargar los datos de tus inversiones.";
+            this.error = "Error al calcular el precio.";
             console.error("Error al calcular el precio:", error);
           }
         }
 
-        this.results = coins;
+        this.results = this.coins;
       } catch (error) {
         this.error = "Error al cargar los datos de tus inversiones.";
-        console.error("Error al calcular las criptomonedas:", error);
+        console.error("Error al cargar los datos de tus inversiones:", error);
       } finally {
         this.loading = false;
       }

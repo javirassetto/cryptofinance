@@ -244,7 +244,7 @@ export default {
       this.loading = true;
       try {
         this.transactions = await getTransactions();
-        this.orderTransctions();
+        //this.orderTransctions();
       } catch (error) {
         this.error = "Error al cargar tu historial...";
         console.error("Error obteniendo transacciones:", error);
@@ -301,11 +301,11 @@ export default {
         console.error("Error eliminando la transacción:", error);
       }
     },
-    orderTransctions() {
-      return this.transactions
-        .slice()
-        .sort((a, b) => new Date(b.datetime) - new Date(a.datetime));
-    },
+    // orderTransctions() {
+    //   return this.transactions
+    //     .slice()
+    //     .sort((a, b) => new Date(b.datetime) - new Date(a.datetime));
+    // },
     async validateAndCalculatePrice() {
       this.money = await calculatePrice(
         this.crypto_code,

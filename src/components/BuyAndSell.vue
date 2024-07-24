@@ -134,11 +134,11 @@ export default {
     };
   },
   computed: {
-    sortedTransactions() {
-      return this.transactions
-        .slice()
-        .sort((a, b) => new Date(b.datetime) - new Date(a.datetime));
-    },
+    // sortedTransactions() {
+    //   return this.transactions
+    //     .slice()
+    //     .sort((a, b) => new Date(b.datetime) - new Date(a.datetime));
+    // },
     latestTransaction() {
       if (this.transactions.length === 0) return null;
       return this.transactions
@@ -198,7 +198,7 @@ export default {
       this.loading = true;
       try {
         this.transactions = await getTransactions();
-        this.orderTransctions();
+        //this.orderTransctions();
       } catch (error) {
         this.error = "Ha ocurrido un error al intentar operar..";
         console.error("Error obteniendo transacciones:", error);
@@ -242,11 +242,11 @@ export default {
       this.action = "";
       this.datetime = "";
     },
-    orderTransctions() {
-      return this.transactions
-        .slice()
-        .sort((a, b) => new Date(b.datetime) - new Date(a.datetime));
-    },
+    // orderTransctions() {
+    //   return this.transactions
+    //     .slice()
+    //     .sort((a, b) => new Date(b.datetime) - new Date(a.datetime));
+    // },
     //funcion de util/calculatePrice
     async validateAndCalculatePrice() {
       this.money = await calculatePrice(
@@ -258,6 +258,7 @@ export default {
     },
     canSellCrypto() {
       const userCryptoAmount = this.userCryptos[this.crypto_code] || 0;
+      //console.log("amount: " + userCryptoAmount);
       return this.crypto_amount <= userCryptoAmount;
     },
   },
