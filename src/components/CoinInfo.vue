@@ -155,7 +155,7 @@ export default {
   padding: 5px;
   margin-bottom: 3px;
   color: #203682;
-  cursor: pointer;
+  cursor: text;
   border: 1px solid dimgrey;
   font-size: 16px;
   background-color: black;
