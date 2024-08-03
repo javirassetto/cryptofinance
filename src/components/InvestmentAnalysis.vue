@@ -83,20 +83,22 @@ export default {
             }
           }
 
-          try {
-            //obtengo el precio actual y calculo ganancias
-            const cryptoPrice = await getCryptoPrice(cryptoCode, "purchase");
-            const ActualTotalValue = totalCryptoAmount * cryptoPrice;
-            const Winnings = ActualTotalValue - totalInvested;
+          if (totalCryptoAmount >= 0) {
+            try {
+              //obtengo el precio actual y calculo ganancias
+              const cryptoPrice = await getCryptoPrice(cryptoCode, "purchase");
+              const ActualTotalValue = totalCryptoAmount * cryptoPrice;
+              const Winnings = ActualTotalValue - totalInvested;
 
-            this.coins.push({
-              crypto_code: cryptoCode,
-              Winnings,
-              totalCryptoAmount,
-            });
-          } catch (error) {
-            this.error = "Error al calcular el precio.";
-            console.error("Error al calcular el precio:", error);
+              this.coins.push({
+                crypto_code: cryptoCode,
+                Winnings,
+                totalCryptoAmount,
+              });
+            } catch (error) {
+              this.error = "Error al calcular el precio.";
+              console.error("Error al calcular el precio:", error);
+            }
           }
         }
 
