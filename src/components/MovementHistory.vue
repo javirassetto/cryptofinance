@@ -6,7 +6,7 @@
       <strong> {{ error }} </strong>
     </div>
     <!-- Div Modal para proceso -->
-    <div v-if="isProcessing" class="modal">
+    <div v-show="isProcessing" class="modal">
       <div class="modal-content">
         <div class="processView">
           <h4>Procesando...</h4>
@@ -204,6 +204,7 @@ export default {
       imagePrint: ImagePrint,
       selectedExchange: "",
       isProcessing: false,
+      flag: false,
     };
   },
   computed: {
@@ -234,23 +235,26 @@ export default {
         datetime: new Date().toISOString(),
       };
       try {
-        this.isEditing = false;
-        this.isProcessing = true;
+        //this.isProcessing = true;
         if (this.isEditing && this.editingTransaction) {
           await updateTransaction(this.editingTransaction._id, transaction);
+          this.isEditing = false;
           this.editingTransaction = null;
+          this.isProcessing = true;
         } else {
           await createTransaction(transaction);
         }
         this.fetchTransactions();
-        this.showAlertMessage("Transacción registrada exitosamente");
+        this.flag = true;
       } catch (error) {
         this.error = " Ha ocurrido un error en la operación.";
         this.isEditing = false;
-        console.error("Error registrando la transacción:", error);
-      } finally {
         this.isProcessing = false;
+        console.error("Error registrando la transacción:", error);
       }
+      if (this.flag)
+        this.showAlertMessage("Transacción registrada exitosamente");
+      this.flag = false;
     },
     async fetchTransactions() {
       this.loading = true;
@@ -261,6 +265,7 @@ export default {
         console.error("Error obteniendo transacciones:", error);
       } finally {
         this.loading = false;
+        this.isProcessing = false;
       }
     },
     DetailTransaction(transaction) {
@@ -414,7 +419,7 @@ button:hover {
   border: 1px solid #888;
   border-radius: 10px;
   width: 68%;
-  max-width: 600px;
+  max-width: 612px;
 }
 .modal-content label {
   margin-bottom: 0.5rem;
