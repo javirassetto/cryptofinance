@@ -5,6 +5,14 @@
     <div v-if="error" class="error">
       <strong> {{ error }} </strong>
     </div>
+    <!-- Div Modal para proceso -->
+    <div v-if="isProcessing" class="modal">
+      <div class="modal-content">
+        <div class="processView">
+          <h4>Procesando...</h4>
+        </div>
+      </div>
+    </div>
     <table v-if="transactions.length > 0 && !error && !loading">
       <thead>
         <tr>
@@ -195,6 +203,7 @@ export default {
       alertMessage: "",
       imagePrint: ImagePrint,
       selectedExchange: "",
+      isProcessing: false,
     };
   },
   computed: {
@@ -225,9 +234,10 @@ export default {
         datetime: new Date().toISOString(),
       };
       try {
+        this.isEditing = false;
+        this.isProcessing = true;
         if (this.isEditing && this.editingTransaction) {
           await updateTransaction(this.editingTransaction._id, transaction);
-          this.isEditing = false;
           this.editingTransaction = null;
         } else {
           await createTransaction(transaction);
@@ -238,13 +248,14 @@ export default {
         this.error = " Ha ocurrido un error en la operación.";
         this.isEditing = false;
         console.error("Error registrando la transacción:", error);
+      } finally {
+        this.isProcessing = false;
       }
     },
     async fetchTransactions() {
       this.loading = true;
       try {
         this.transactions = await getTransactions();
-        //this.orderTransctions();
       } catch (error) {
         this.error = "Error al cargar tu historial...";
         console.error("Error obteniendo transacciones:", error);
@@ -289,23 +300,21 @@ export default {
       this.deleteTransactionId = null;
     },
     async deleteTransaction() {
+      this.isDelete = false;
+      this.isProcessing = true;
       try {
         await deleteTransactionById(this.deleteTransactionId);
+        this.cancelDelete();
         this.fetchTransactions();
-        this.isDelete = false;
-        this.deleteTransactionId = null;
         this.showAlertMessage("Transacción eliminada exitosamente");
       } catch (error) {
         this.error = " Ha ocurrido un error en la operación";
         this.isDelete = false;
         console.error("Error eliminando la transacción:", error);
+      } finally {
+        this.isProcessing = false;
       }
     },
-    // orderTransctions() {
-    //   return this.transactions
-    //     .slice()
-    //     .sort((a, b) => new Date(b.datetime) - new Date(a.datetime));
-    // },
     async validateAndCalculatePrice() {
       this.money = await calculatePrice(
         this.crypto_code,
@@ -395,7 +404,6 @@ button:hover {
   width: 100%;
   height: 100%;
   overflow: auto;
-  background-color: rgb(0, 0, 0);
   background-color: rgba(0, 0, 0, 0.4);
 }
 
@@ -406,6 +414,7 @@ button:hover {
   border: 1px solid #888;
   border-radius: 10px;
   width: 68%;
+  max-width: 600px;
 }
 .modal-content label {
   margin-bottom: 0.5rem;
@@ -442,6 +451,16 @@ button:hover {
   color: #aaa;
   text-decoration: none;
   cursor: pointer;
+}
+.modal-content.processView {
+  width: 0.5;
+  padding: 2%;
+  text-align: center;
+}
+.processView {
+  margin: 0;
+  text-align: center;
+  font-size: 1.2em;
 }
 .detailView p {
   width: 80%;
