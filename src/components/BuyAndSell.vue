@@ -2,6 +2,14 @@
   <div v-if="error" class="error">
     <strong> {{ error }} </strong>
   </div>
+  <!-- Div Modal para proceso -->
+  <div v-if="isProcessing" class="modal">
+    <div class="modal-content">
+      <div class="processView">
+        <h4>Procesando...</h4>
+      </div>
+    </div>
+  </div>
   <div class="buy-and-sell" v-if="!error">
     <Alert v-if="showAlert" :message="alertMessage" @accept="handleAccept" />
     <form @submit.prevent="handleTransaction">
@@ -131,14 +139,10 @@ export default {
       showAlert: false,
       alertMessage: "",
       selectedExchange: "",
+      isProcessing: false,
     };
   },
   computed: {
-    sortedTransactions() {
-      return this.transactions
-        .slice()
-        .sort((a, b) => new Date(b.datetime) - new Date(a.datetime));
-    },
     latestTransaction() {
       if (this.transactions.length === 0) return null;
       return this.transactions
@@ -175,6 +179,7 @@ export default {
         );
         return;
       }
+      this.isProcessing = true;
       try {
         const transaction = {
           user_id: userId,
@@ -192,13 +197,15 @@ export default {
         this.showAlertMessage("Transacción registrada exitosamente.");
       } catch (error) {
         console.error("Error registrando la transacción:", error);
+      } finally {
+        this.isProcessing = false;
       }
     },
     async fetchTransactions() {
       this.loading = true;
       try {
         this.transactions = await getTransactions();
-        this.orderTransctions();
+        //this.orderTransctions();
       } catch (error) {
         this.error = "Ha ocurrido un error al intentar operar..";
         console.error("Error obteniendo transacciones:", error);
@@ -242,11 +249,6 @@ export default {
       this.action = "";
       this.datetime = "";
     },
-    orderTransctions() {
-      return this.transactions
-        .slice()
-        .sort((a, b) => new Date(b.datetime) - new Date(a.datetime));
-    },
     //funcion de util/calculatePrice
     async validateAndCalculatePrice() {
       this.money = await calculatePrice(
@@ -258,6 +260,7 @@ export default {
     },
     canSellCrypto() {
       const userCryptoAmount = this.userCryptos[this.crypto_code] || 0;
+      //console.log("amount: " + userCryptoAmount);
       return this.crypto_amount <= userCryptoAmount;
     },
   },
@@ -348,5 +351,29 @@ tr:hover {
 }
 .error {
   color: red;
+}
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  width: 68%;
+  max-width: 600px;
+}
+.processView {
+  margin: 0;
+  text-align: center;
+  font-size: 1.2em;
 }
 </style>

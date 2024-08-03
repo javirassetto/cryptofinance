@@ -1,17 +1,17 @@
 <template>
   <h2>Estado actual de tus finanzas</h2>
   <div>
-    <ActualState />
+    <CurrentState />
   </div>
 </template>
 
 <script>
-import ActualState from "@/components/ActualState.vue";
+import CurrentState from "@/components/CurrentState.vue";
 
 export default {
-  name: "ActualStateView",
+  name: "CurrentStateView",
   components: {
-    ActualState,
+    CurrentState,
   },
 };
 </script>

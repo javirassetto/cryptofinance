@@ -19,7 +19,7 @@ export default createStore({
     login({ commit }, user) {
       commit("setUser", user);
     },
-    /*limpio la información del usuario */
+    /*limpio la información del usuario en Cerrar sesion */
     logout({ commit }) {
       commit("setUser", null);
       localStorage.removeItem("user");
@@ -30,6 +30,7 @@ export default createStore({
     getUser(state) {
       return state.user;
     },
+    isAuthenticated: (state) => !!state.user,
   },
   modules: {},
 });

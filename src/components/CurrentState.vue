@@ -1,5 +1,5 @@
 <template>
-  <div class="actual-state">
+  <div class="current-state">
     <div v-if="loading">Cargando...</div>
     <div v-if="error" class="error">
       <strong> {{ error }} </strong>
@@ -42,7 +42,7 @@
 import { getTransactions, getCryptoPrice } from "@/services/apiService";
 
 export default {
-  name: "ActualState",
+  name: "CurrentState",
   data() {
     return {
       coinData: [],
@@ -137,12 +137,12 @@ export default {
 </script>
 
 <style scoped>
-.actual-state {
+.current-state {
   max-width: 800px;
   margin: 2em auto;
 }
 
-.actual-state h2 {
+.current-state h2 {
   text-align: center;
 }
 .conteiner {

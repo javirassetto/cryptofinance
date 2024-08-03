@@ -115,7 +115,7 @@ export default {
       }
     },
     SelectCoin(index) {
-      this.selectedCoin = this.coinData[index];
+      this.selectedCoin = this.filteredCoin[index];
       this.smallView = true;
     },
     closeSelectedCoin() {
@@ -148,13 +148,14 @@ export default {
 }
 .error {
   font-weight: bold;
+  color: red;
 }
 .search-input {
   width: 95%;
   padding: 5px;
   margin-bottom: 3px;
   color: #203682;
-  cursor: pointer;
+  cursor: text;
   border: 1px solid dimgrey;
   font-size: 16px;
   background-color: black;

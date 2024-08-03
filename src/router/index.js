@@ -3,9 +3,9 @@ import CoinView from "@/views/CoinView.vue";
 import LoginView from "@/views/LoginView.vue";
 import MovementHistoryView from "@/views/MovementHistoryView.vue";
 import BuyAndSell from "@/views/BuyAndSell.vue";
-import ActualStateView from "@/views/ActualStateView.vue";
+import CurrentStateView from "@/views/CurrentStateView.vue";
 import InvestmentAnalysisView from "@/views/InvestmentAnalysisView.vue";
-
+import store from "@/store";
 const routes = [
   {
     path: "/",
@@ -33,9 +33,9 @@ const routes = [
     component: MovementHistoryView,
   },
   {
-    path: "/actualState",
-    name: "actualState",
-    component: ActualStateView,
+    path: "/currentState",
+    name: "currentState",
+    component: CurrentStateView,
   },
   {
     path: "/investmentAnalysis",
@@ -47,6 +47,17 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
+});
+//navegación global
+router.beforeEach((to, from, next) => {
+  const publicPages = ["/login"];
+  const authRequired = !publicPages.includes(to.path);
+  const isAuthenticated = store.getters.isAuthenticated;
+
+  if (authRequired && !isAuthenticated) {
+    return next("/login");
+  }
+  next();
 });
 
 export default router;
