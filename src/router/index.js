@@ -3,7 +3,7 @@ import CoinView from "@/views/CoinView.vue";
 import LoginView from "@/views/LoginView.vue";
 import MovementHistoryView from "@/views/MovementHistoryView.vue";
 import BuyAndSell from "@/views/BuyAndSell.vue";
-import ActualStateView from "@/views/ActualStateView.vue";
+import CurrentStateView from "@/views/CurrentStateView.vue";
 import InvestmentAnalysisView from "@/views/InvestmentAnalysisView.vue";
 import store from "@/store";
 const routes = [
@@ -33,9 +33,9 @@ const routes = [
     component: MovementHistoryView,
   },
   {
-    path: "/actualState",
-    name: "actualState",
-    component: ActualStateView,
+    path: "/currentState",
+    name: "currentState",
+    component: CurrentStateView,
   },
   {
     path: "/investmentAnalysis",
