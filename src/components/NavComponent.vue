@@ -11,7 +11,7 @@
         <router-link to="/movementHistory" class="nav-link"
           >Mis Movimientos</router-link
         >
-        <router-link to="/actualState" class="nav-link"
+        <router-link to="/currentState" class="nav-link"
           >Estado Actual</router-link
         >
         <router-link to="/investmentAnalysis" class="nav-link"

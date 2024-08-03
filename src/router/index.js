@@ -34,7 +34,7 @@ const routes = [
   },
   {
     path: "/currentState",
-    name: "currenteState",
+    name: "currentState",
     component: CurrentStateView,
   },
   {
