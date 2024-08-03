@@ -2,14 +2,14 @@ import axios from "axios";
 import store from "@/store";
 
 // URL base para la API de almacenamiento de datos
-//const URL_base = "https://laboratorio3-f36a.restdb.io/rest";
+const URL_base = "https://laboratorio3-f36a.restdb.io/rest";
 
 // Clave API para la API de almacenamiento de datos
-//const apiKey = "60eb09146661365596af552f";
+const apiKey = "60eb09146661365596af552f";
 
 // URL 2° por si falla
-const URL_base = "https://laboratorio3-5459.restdb.io/rest/";
-const apiKey = "64a57c2b86d8c50fe6ed8fa5";
+//const URL_base = "https://laboratorio3-5459.restdb.io/rest/";
+//const apiKey = "64a57c2b86d8c50fe6ed8fa5";
 
 // URL 3° por si falla
 //const URL_base = "https://laboratorio3-5fc7.restdb.io/rest/";
